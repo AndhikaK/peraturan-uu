@@ -7,7 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Peraturan UU</title>
 
+    <link rel="shortcut icon" href="{{ asset('assets/img/logo-icon.png') }}" type="image/x-icon">
+
+    {{-- TAILWIND CSS --}}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    {{-- BOXICONS CSS --}}
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>

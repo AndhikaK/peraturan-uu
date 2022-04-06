@@ -10,5 +10,5 @@ module.exports = {
             body: ["Inter", "system-ui", "sans-serif"],
         },
     },
-    plugins: [],
+    plugins: [require("@tailwindcss/forms")],
 };
