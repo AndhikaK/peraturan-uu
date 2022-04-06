@@ -20,7 +20,12 @@
     <div class="grid grid-rows-[1fr_auto] min-h-screen">
         @include('layouts.navbar')
 
-        <div class="p-10 px-3 md:p-10 mt-16">
+        <div class="p-10 px-3 md:p-10 mt-12">
+
+            @isset($breadCrumbs)
+                @include('layouts.breadcrumbs')
+            @endisset
+
             @yield('content')
         </div>
 

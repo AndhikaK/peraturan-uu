@@ -12,12 +12,17 @@ class ArchiveController extends Controller
     {
         // PAGE SETUP
         $pageTitle = 'Arsip';
+        $breadCrumbs = [
+            ['title' => 'Arsip', 'url' => ''],
+            ['title' => 'Data', 'url' => ''],
+        ];
         // GET DATA
         $categories = Category::all();
         $archives = Archive::with(['category'])->get();
 
         return view('pages.archive', [
             'pageTitle' => $pageTitle,
+            'breadCrumbs' => $breadCrumbs,
             'categories' => $categories,
             'archives' => $archives,
         ]);

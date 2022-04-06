@@ -1,7 +1,7 @@
 @extends('layouts.index-layout')
 
 @section('content')
-    <div class="grid md:grid-cols-[1fr_3fr] gap-5">
+    <div class="grid md:grid-cols-[1fr_3fr] gap-3">
         {{-- FILTER --}}
         <div class="p-2">
             <div class="font-semibold">Filter</div>
@@ -30,11 +30,11 @@
         </div>
         {{-- ARCHIVE --}}
         <div class="p-3">
-            <div class="font-semibold">Arsip Undang-Undang</div>
+            <div class="font-semibold">Arsip </div>
             <div class="mt-5 w-full shadow-md">
                 <table class="table-auto w-full border-collapse border border-slate-400">
                     <thead class="">
-                        <tr>
+                        <tr class="bg-slate-300">
                             <th class="border border-slate-300 p-2">No</th>
                             <th class="border border-slate-300 p-2">Peraturan</th>
                             <th class="border border-slate-300 p-2">Tentang</th>
@@ -46,7 +46,7 @@
                     <tbody>
                         <?php $i = 1; ?>
                         @foreach ($archives as $archive)
-                            <tr class=" bg-slate-400">
+                            <tr class="">
                                 <td class=" border border-slate-300 p-2 text-center">{{ $i++ }}</td>
                                 <td class=" border border-slate-300 p-2">{{ $archive->judul_arsip }}</td>
                                 <td class=" border border-slate-300 p-2">{{ $archive->jenis_arsip }}</td>
@@ -60,13 +60,4 @@
             </div>
         </div>
     </div>
-
-    <table class="w-full border">
-        <thead>
-            <tr class="" style="background: red">
-                <td>no</td>
-                <td>bullshit</td>
-            </tr>
-        </thead>
-    </table>
 @endsection
