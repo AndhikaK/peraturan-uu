@@ -46,6 +46,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript"
         src="https://cdn.datatables.net/v/bs5/dt-1.11.3/b-2.0.1/fc-4.0.1/sl-1.3.3/datatables.min.js"></script>
+    <script src="{{ asset('js/dataTableFilter.js') }}"></script>
 
     @yield('datatable')
 

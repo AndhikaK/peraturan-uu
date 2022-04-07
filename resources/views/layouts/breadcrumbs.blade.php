@@ -1,4 +1,4 @@
-<div class="lg:flex justify-between items-center">
+<div class="mb-3 lg:flex justify-between items-center">
     <div class="text-lg font-semibold">
         {{ $pageTitle }}
     </div>

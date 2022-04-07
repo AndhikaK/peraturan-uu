@@ -12,26 +12,33 @@ class ArchiveController extends Controller
     public function index()
     {
         // PAGE SETUP
-        $pageTitle = 'Arsip Undang-Undang';
+        $pageTitle = 'Arsip';
+        $active = 'Arsip';
         $breadCrumbs = [
-            ['title' => 'Arsip', 'url' => ''],
-            ['title' => 'Data', 'url' => ''],
+            'bx-icon' => 'bx bx-notepad',
+            'list' => [
+                ['title' => 'Beranda', 'url' => route('index')],
+                ['title' => 'Arsip', 'url' => ''],
+            ]
+
         ];
         // GET DATA
         $categories = Category::all();
-        $archives = Archive::with(['category'])->get();
 
-        return view('pages.archive', [
+        return view('pages.archive-v2', [
             'pageTitle' => $pageTitle,
             'breadCrumbs' => $breadCrumbs,
             'categories' => $categories,
-            'archives' => $archives,
         ]);
     }
 
-    public function getData()
+    public function getData(Request $request)
     {
         $data = Archive::select(['id_arsip', 'judul_arsip', 'jenis_arsip', 'status', 'id_kategori']);
+
+        if ($request->category) {
+            $data->where('id_kategori', $request->category);
+        }
 
         return DataTables::of($data)->make(true);
 
