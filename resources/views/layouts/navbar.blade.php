@@ -1,4 +1,4 @@
-<div class="p-3 py-5 md:px-10 fixed top-0 left-0 right-0 flex justify-between shadow-md backdrop-blur-sm bg-white/30">
+<div class="p-3 py-5 md:px-10  flex justify-between shadow-md bg-white">
     <a href="{{ route('index') }}">
         <img src="{{ asset('assets/img/logo-icon.png') }}" alt="peraturan-logo" class="max-h-6 inline-block mr-2">
         <span class="font-bold text-lg">Peraturan</span>

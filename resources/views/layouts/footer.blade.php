@@ -1,9 +1,9 @@
 <div
-    class="md:flex md:justify-between mx-3 py-5 md:mx-10 mt-5 border-t border-slate-400/20 text-center text-slate-400 text-sm">
+    class="lg:flex lg:justify-between px-3 py-2 lg:px-10 lg:py-5 mt-5 border-t bg-slate-300 border-slate-300 text-center text-slate-600 text-sm">
     <div>
         Copyright &copy; {{ date('Y') }} Universitas Lampung
     </div>
     <div>
-        Developed by <span class="font-semibold">Kissuki</span>
+        Developed by <span class="font-bold">Kissuki</span>
     </div>
 </div>

@@ -26,5 +26,8 @@ Route::resources([
     'archive' => ArchiveController::class,
 ]);
 
+// GET DATA FOR DATATABLES
+Route::get('archive_data', [ArchiveController::class, 'getData'])->name('archive.data');
+
 Route::get('file', [FileController::class, 'index'])->name('file');
 Route::post('file', [FileController::class, 'store'])->name('file.store');

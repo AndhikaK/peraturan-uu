@@ -25,10 +25,11 @@
 
 <body class="bg-slate-50">
 
-    <div class="grid grid-rows-[1fr_auto] min-h-screen">
-        @include('layouts.navbar')
+    <div class="grid grid-rows-[auto_1fr_auto] min-h-screen">
+        {{-- @include('layouts.navbar') --}}
+        @include('layouts.navbar-v2')
 
-        <div class="p-10 px-3 md:p-10">
+        <div class="px-3 py-2 lg:px-8 lg:py-3">
             @isset($breadCrumbs)
                 @include('layouts.breadcrumbs')
             @endisset

@@ -16,9 +16,7 @@
                             </label>
                             <select name="category"
                                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-3 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->kategori_id }}">{{ $category->nama_kategori }}</option>
-                                @endforeach
+
                             </select>
                         </div>
                         <button
@@ -32,20 +30,7 @@
         </div>
         {{-- ARCHIVE --}}
         <div class="p-5 bg-white rounded-lg shadow-lg">
-            <div class="w-full">
-                <table class="mt-3" id="myTable" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-                    <thead class="stripe hover">
-                        <tr class="">
-                            <th class="">ID</th>
-                            <th class="">Peraturan</th>
-                            <th class="">Tentang</th>
-                            <th class="">
-                                <i class='bx bxs-download'></i>
-                            </th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+
         </div>
     </div>
 @endsection

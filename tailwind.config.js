@@ -10,5 +10,8 @@ module.exports = {
             body: ["Inter", "system-ui", "sans-serif"],
         },
     },
-    plugins: [require("@tailwindcss/forms")],
+    plugins: [require("@tailwindcss/forms"), require("windstrap")],
+    purge: {
+        layers: ["base", "utilities"],
+    },
 };
