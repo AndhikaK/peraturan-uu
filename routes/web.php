@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ArchiveController;
+use App\Http\Controllers\IndexController;
+use App\Models\Archive;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,12 +16,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/', [IndexController::class, 'index'])->name('index');
 
-require __DIR__.'/auth.php';
+Route::resources([
+    'archive' => ArchiveController::class,
+]);
+
+// ROUTE FOR DATATABLES DATA
+Route::get('archive_data', [ArchiveController::class, 'getData'])->name('archive.data');
+
+Route::get('archive_file_create', [ArchiveController::class, 'createFile'])->name('archive-file.create');
+
+Route::post('archive_file_store', [ArchiveController::class, 'fileStore'])->name('archive-file.store');
+
+require __DIR__ . '/auth.php';

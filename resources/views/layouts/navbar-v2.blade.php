@@ -1,5 +1,6 @@
 <div>
-    <div class="px-3 py-3 lg:px-8 lg:py-3" style="background-image: url('{{ asset('assets/img/pattern.svg') }}')">
+    <div class="px-3 py-3 lg:px-8 lg:py-3 flex flex-row justify-between"
+        style="background-image: url('{{ asset('assets/img/pattern.svg') }}')">
         <a href="{{ route('index') }}">
             <div class="flex items-center">
                 <img src="{{ asset('assets/img/logo-icon.png') }}" class="mr-3 h-10" alt="app-logo">
@@ -9,6 +10,24 @@
                 </div>
             </div>
         </a>
+        {{-- LOGIN ICON FOR AUTHENTICATION --}}
+        @auth
+            <div class="dropdown">
+                <button class="p-2.5 text-white dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ $user->name }}
+                </button>
+                <nav class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button class="dropdown-item px-2 py-2 hover:bg-sky-50  ">Log out</button>
+                    </form>
+                </nav>
+            </div>
+        @endauth
+        @guest
+            <a href="{{ route('login') }}" class="p-2.5 text-white">Login</a>
+        @endguest
     </div>
     <div class="px-3 bg-white hidden lg:flex lg:flex-row lg:px-8 drop-shadow">
         <li class="p-3 text-sm list-none hover:bg-sky-700 hover:text-white">

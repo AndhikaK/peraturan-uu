@@ -13,6 +13,7 @@ class FileController extends Controller
     {
         return view('file');
     }
+
     public function store(Request $request)
     {
 

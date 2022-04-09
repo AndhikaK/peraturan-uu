@@ -4,7 +4,6 @@
     <div class="grid lg:grid-cols-[1fr_3fr] gap-4">
         {{-- FILTER --}}
         <div>
-
             <div class="p-3 bg-white rounded-lg border border-slate-300 border-t-2 border-t-orange-600">
                 <div>
                     <i class='bx bxs-filter-alt text-lg'></i>
@@ -34,6 +33,14 @@
         {{-- ARCHIVE --}}
         <div class="p-3 bg-white rounded-lg border border-slate-300 border-t-2 border-t-emerald-900">
             <div class="w-full">
+                @auth
+                    <div class="mb-3 flex flex-row justify-end">
+                        <a href="{{ route('archive.create') }}"
+                            class="p-2 text-sm bg-sky-700 rounded-sm text-white font-bold">
+                            Tambah UU
+                        </a>
+                    </div>
+                @endauth
                 <table class="mt-3" id="myTable" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                     <thead class="stripes hover">
                         <tr class="">
