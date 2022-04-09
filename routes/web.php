@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArchiveController;
+use App\Http\Controllers\DraftController;
 use App\Http\Controllers\IndexController;
 use App\Models\Archive;
 use Illuminate\Support\Facades\Route;
@@ -21,10 +22,12 @@ Route::get('/', [IndexController::class, 'index'])->name('index');
 
 Route::resources([
     'archive' => ArchiveController::class,
+    'draft' => DraftController::class,
 ]);
 
 // ROUTE FOR DATATABLES DATA
 Route::get('archive_data', [ArchiveController::class, 'getData'])->name('archive.data');
+Route::get('draft_data', [DraftController::class, 'hitungCousine'])->name('draft.data');
 
 Route::get('archive_file_create', [ArchiveController::class, 'createFile'])->name('archive-file.create');
 

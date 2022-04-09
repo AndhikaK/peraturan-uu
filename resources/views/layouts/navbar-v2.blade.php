@@ -29,17 +29,18 @@
             <a href="{{ route('login') }}" class="p-2.5 text-white">Login</a>
         @endguest
     </div>
-    <div class="px-3 bg-white hidden lg:flex lg:flex-row lg:px-8 drop-shadow">
-        <li class="p-3 text-sm list-none hover:bg-sky-700 hover:text-white">
-            <a href="{{ route('index') }}">Beranda</a>
-        </li>
-        <li class="p-3 text-sm list-none hover:bg-sky-700 hover:text-white">
-            <a href="{{ route('archive.index') }}">Arsip</a>
-        </li>
-        <li class="p-3 text-sm list-none hover:bg-sky-700 hover:text-white">
-            <a href="">Drafting</a>
-        </li>
-    </div>
+    {{-- RENDER NAVBAR FOR LARGE SCREEN --}}
+    @isset($navs)
+        <div class="px-3 bg-white hidden lg:flex lg:flex-row lg:px-8 drop-shadow">
+            @foreach ($navs as $nav)
+                <li
+                    class="p-3 text-sm list-none hover:bg-sky-700 hover:text-white {{ $active == $nav['title'] ? 'bg-sky-700 text-white' : '' }}">
+                    <a href="{{ $nav['route'] }}">{{ $nav['title'] }}</a>
+                </li>
+            @endforeach
+            </li>
+        </div>
+    @endisset
 
     {{-- DROPDOWN MENU FOR SMALL VIEW --}}
     <div class="px-3 py-2 flex flex-row justify-betwen lg:hidden bg-blue-900">
@@ -50,15 +51,22 @@
                 <i class='bx bx-menu text-2xl'></i>
             </button>
             <nav class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <button class="dropdown-item">
+                @isset($navs)
+                    @foreach ($navs as $nav)
+                        <button class="dropdown-item">
+                            <a href="{{ $nav['route'] }}">{{ $nav['title'] }}</a>
+                        </button>
+                    @endforeach
+                @endisset
+                {{-- <button class="dropdown-item">
                     <a href="{{ route('index') }}">Beranda</a>
                 </button>
                 <button class="dropdown-item">
                     <a href="{{ route('archive.index') }}">Arsip</a>
                 </button>
                 <button class="dropdown-item">
-                    <a href="">Drafting</a>
-                </button>
+                    <a href="{{ route('draft.index') }}">Drafting</a>
+                </button> --}}
             </nav>
         </div>
     </div>

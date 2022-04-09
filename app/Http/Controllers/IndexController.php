@@ -7,12 +7,19 @@ use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
+    use NavigationList;
     public function index()
     {
 
-        // return view('pages.index');
+        // PAGE SETUP
+        $pageTitle = 'Beranda';
+        $active = 'Beranda';
+
         return view('layouts.app-layout', [
             'user' => Auth::user(),
+            'pageTitle' => $pageTitle,
+            'active' => $active,
+            'navs' => $this->NavigationList(),
         ]);
     }
 }

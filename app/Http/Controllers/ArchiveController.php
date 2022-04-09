@@ -11,6 +11,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ArchiveController extends Controller
 {
+    use NavigationList;
+
     public function index()
     {
         // PAGE SETUP
@@ -29,7 +31,9 @@ class ArchiveController extends Controller
         return view('pages.archive-v2', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
+            'active' => $active,
             'breadCrumbs' => $breadCrumbs,
+            'navs' => $this->NavigationList(),
             'categories' => $categories,
         ]);
     }
@@ -78,7 +82,9 @@ class ArchiveController extends Controller
         return view('pages.archive-create', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
+            'active' => $active,
             'breadCrumbs' => $breadCrumbs,
+            'navs' => $this->NavigationList(),
             'categories' => $categories,
         ]);
     }
@@ -87,7 +93,7 @@ class ArchiveController extends Controller
     {
         // PAGE SETUP
         $pageTitle = 'Upload Arsip';
-        $active = 'Upload Arsip';
+        $active = 'Arsip';
         $breadCrumbs = [
             'bx-icon' => 'bx bx-notepad',
             'list' => [
@@ -103,7 +109,9 @@ class ArchiveController extends Controller
         return view('pages.archive-file-create', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
+            'active' => $active,
             'breadCrumbs' => $breadCrumbs,
+            'navs' => $this->NavigationList(),
             'categories' => $categories,
         ]);
     }
