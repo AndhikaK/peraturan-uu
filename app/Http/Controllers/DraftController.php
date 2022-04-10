@@ -8,6 +8,7 @@ use App\Models\StemmingTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Sastrawi\Stemmer\StemmerFactory;
+use Smalot\PdfParser\Parser;
 use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -167,10 +168,91 @@ class DraftController extends Controller
                 }
             }
 
-            // RETURN THE RESULT
+            // RETURN THE RESULT TO DATATABLE FORMAT
+            $theme = $request->theme;
             return DataTables::of($data)
                 ->editColumn('cosSim', 'components.data-table.draft-cosSim')
+                ->addColumn('detail', function ($row) use ($theme) {
+                    return view('components.data-table.draft-detail', compact(['row', 'theme']));
+                })
+                ->rawColumns(['detail'])
                 ->make(true);
+        }
+    }
+
+
+    public function show($id, Request $request)
+    {
+        // PAGE SETUP
+        $pageTitle = 'Detail';
+        $active = 'Drafting';
+        $breadCrumbs = [
+            'bx-icon' => 'bx bxs-book-content',
+            'list' => [
+                ['title' => 'Drafting', 'url' => route('archive.index')],
+                ['title' => 'Detail', 'url' => ''],
+            ]
+        ];
+        // GET DATA
+        $archiveUU = Archive::with(['category'])->find($id);
+        $penuh = $this->calcSimilarity($request->theme, $archiveUU);
+
+        return view('pages.draft-detail', [
+            'user' => Auth::user(),
+            'pageTitle' => $pageTitle,
+            'active' => $active,
+            'breadCrumbs' => $breadCrumbs,
+            'navs' => $this->NavigationList(),
+            'archiveUU' => $archiveUU,
+            'view' => $request->view,
+            'penuh' => $penuh,
+        ]);
+    }
+
+    private function calcSimilarity($theme, $data)
+    {
+        // GET THE ARCHIVE OF CURRENT ID
+        $arsip1 = $data;
+        // STEM THE THEM INPUT
+        $stemmerFactory = new StemmerFactory;
+        $stemmer = $stemmerFactory->createStemmer();
+        $stemmingQuery = $stemmer->stem($theme);
+        // TRANSFORM QUERY INTO ARRAY
+        $query = explode(' ', $stemmingQuery);
+
+        // GET ARCHIVE UU FILE PATH
+        $pdfPath = public_path('assets\pdf\\' . $data->file_arsip);
+        if (file_exists($pdfPath)) {
+            $pdfParser = new Parser();
+            $pdf = $pdfParser->parseFile($pdfPath);
+            $newArsipPembanding1 = $pdf->getText();
+
+            $newArsipPembanding1 = str_ireplace("\n", "<br>", $newArsipPembanding1);
+
+            $stemminghtml = explode("<br>", $newArsipPembanding1);
+
+            foreach ($stemminghtml as $key => $value) {
+                $stemminghtml[$key] = explode(" ", $value);
+            }
+
+            foreach ($stemminghtml as $key => $value) {
+                foreach ($value as $key1 => $value1) {
+                    if (
+                        in_array($stemmer->stem(strtolower($stemminghtml[$key][$key1])), $query)
+                    ) {
+                        $stemminghtml[$key][$key1] = '<span style="background: yellow">' . $stemminghtml[$key][$key1] . '</span>';
+                    }
+                }
+            }
+
+            foreach ($stemminghtml as $key => $value) {
+                $stemminghtmlnew[$key] = implode(' ', $value);
+            }
+            $stemminghtmlnew = implode("<br>", $stemminghtmlnew);
+
+            return $stemminghtmlnew;
+        } else {
+            return 'File tidak ditemukan';
         }
     }
 }

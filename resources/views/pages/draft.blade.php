@@ -35,7 +35,7 @@
                 <table class="mt-3 table-auto" id="myTable" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                     <thead class="stripes hover">
                         <tr class="">
-                            <th class="bg-sky-900 text-white">No</th>
+                            <th class="bg-sky-900 text-white"></th>
                             <th class="bg-sky-900 text-white">Peraturan</th>
                             <th class="bg-sky-900 text-white">Tentang</th>
                             <th class="bg-sky-900 text-white">Kategori</th>
@@ -61,8 +61,8 @@
                 serverSide: true,
                 ajax: '{{ route('draft.data') }}',
                 columns: [{
-                        data: 'id_arsip',
-                        name: 'id_arsip'
+                        data: 'detail',
+                        name: 'detail'
                     },
                     {
                         data: 'judul_arsip',
@@ -86,15 +86,19 @@
                     header: false
                 },
                 columnDefs: [{
+                        targets: [0],
+                        className: 'text-center align-top',
+                        orderable: false,
+                    },
+                    {
                         targets: [1, 2, 3],
                         defaultContent: '',
                         className: 'align-top'
                     },
                     {
-                        targets: [0, 4],
+                        targets: [4],
                         className: 'text-center align-top'
                     },
-
                 ],
                 stripeClasses: []
             });
