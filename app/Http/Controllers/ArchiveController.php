@@ -6,6 +6,7 @@ use App\Models\Archive;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Stmt\Foreach_;
 use Smalot\PdfParser\Parser;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -145,6 +146,7 @@ class ArchiveController extends Controller
         $content = $pdf->getText();
         // make all char Lowercase
         $contentLowerCase = strtolower($content);
+        $contentLowerCase = str_replace("\t", '', $contentLowerCase);
         // explode by \n
         $arrContent = explode("\n", $contentLowerCase);
 
@@ -152,12 +154,40 @@ class ArchiveController extends Controller
         $totalPasal = 62;
         $indexedPasal = [];
 
+        // TRIM ALL SPACES INSIDE ARRAY DOCUMENT
+        for ($i = 0; $i < count($arrContent); $i++) {
+            $arrContent[$i] = preg_replace('/^\p{Z}+|\p{Z}+$/u', '', $arrContent[$i]);
+            $arrContent[$i] = preg_replace('/\h+/u', ' ', $arrContent[$i]);
+        }
+
+        // REMOVE UNNECESSARY ARRAY
+        $tempContent = '';
+        for ($i = count($arrContent) - 1; $i >= 0; $i--) {
+            if (strlen($arrContent[$i]) == 0) {
+                array_splice($arrContent, $i, 1);
+                continue;
+            }
+            if ($arrContent[$i] == $tempContent) {
+                array_splice($arrContent, $i, 2);
+                $tempContent = '';
+                continue;
+            }
+
+            if (str_contains($arrContent[$i], ". . .")) {
+                array_splice($arrContent, $i, 1);
+                continue;
+            }
+            $tempContent = $arrContent[$i];
+        }
+
+        dd($arrContent);
+
         $i = 0;
         foreach ($arrContent as $idx => $content) {
+            // $content = preg_replace('/^\p{Z}+|\p{Z}+$/u', '', $content);
             if (strlen($content) < 15) {
                 if (str_contains($content, 'pasal')) {
                     $indexedPasal[$i]['index'] = $idx;
-                    $indexedPasal[$i]['n'] = strlen($content);
                     $indexedPasal[$i]['content'] = $content;
                     $i++;
                 }
