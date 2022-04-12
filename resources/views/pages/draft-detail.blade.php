@@ -1,7 +1,7 @@
 @extends('layouts.app-layout')
 
 @section('content')
-    <div class="p-5 bg-violet-300 rounded-md">
+    <div class="p-5 rounded-lg border bg-white border-slate-400 border-t-4 border-t-sky-700">
         <table>
             <tr>
                 <th class="pr-5 lg:min-w-[200px] align-top text-left">No</th>
@@ -20,21 +20,22 @@
 
     <div class="flex border-b mt-5">
         <a href="{{ route('draft.show', $archiveUU->id_arsip) . '?view=penuh' }}">
-            <button
-                class="h-10 px-4 py-2 -mb-px text-sm text-center text-gray-700 hover:border-gray-400 bg-transparent border-b-2 {{ $view == 'penuh' || !isset($view) ? 'border-blue-500 text-blue-600 hover:border-blue-500' : '' }} sm:text-base  whitespace-nowrap focus:outline-none">
-                Penuh
+            <button class="h-10 px-4 py-2 -mb-px text-sm text-center text-gray-700 hover:border-gray-400 bg-transparent border-b-2 {{ $view == 'penuh' || !isset($view) ? 'border-blue-500 text-blue-600 hover:border-blue-500' : '' }} sm:text-base  whitespace-nowrap focus:outline-none font-bold">
+                Naskah Penuh
             </button>
         </a>
         <a href="{{ route('draft.show', $archiveUU->id_arsip) . '?view=pasal' }}">
-            <button
-                class="h-10 px-4 py-2 -mb-px text-sm text-center text-gray-700 hover:border-gray-400 bg-transparent border-b-2 {{ $view == 'pasal' ? 'border-blue-500 text-blue-600 hover:border-blue-500' : '' }} sm:text-base  whitespace-nowrap focus:outline-none">
+            <button class="h-10 px-4 py-2 -mb-px text-sm text-center text-gray-700 hover:border-gray-400 bg-transparent border-b-2 {{ $view == 'pasal' ? 'border-blue-500 text-blue-600 hover:border-blue-500' : '' }} sm:text-base  whitespace-nowrap focus:outline-none font-bold">
                 Pasal
             </button>
         </a>
     </div>
 
     @if (!isset($view) || $view == 'penuh')
-        <div class="mt-5 p-5 shadow-md text-center max-w-full max-h-[50vh] lg:max-h-[110vh] overflow-scroll" id="penuh">
+        <div class="mt-5">
+            Menampilkan hasil dari <span class="font-bold italic">"{{ $theme }}"</span>
+        </div>
+        <div class="mt-5 p-5 shadow-md text-center bg-white roundedlg max-w-full max-h-[50vh] lg:max-h-[110vh] overflow-scroll" id="penuh">
             {{ $penuh }}
         </div>
     @endif

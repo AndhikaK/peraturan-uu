@@ -203,6 +203,7 @@ class DraftController extends Controller
             'active' => $active,
             'breadCrumbs' => $breadCrumbs,
             'navs' => $this->NavigationList(),
+            'theme' => $request->theme,
             'archiveUU' => $archiveUU,
             'view' => $request->view,
             'penuh' => $penuh,

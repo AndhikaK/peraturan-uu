@@ -40,13 +40,24 @@ class ArchiveController extends Controller
 
     public function getData(Request $request)
     {
-        $data = Archive::select(['id_arsip', 'judul_arsip', 'jenis_arsip', 'status', 'id_kategori']);
+        $data = Archive::with(['category'])->select(['id_arsip', 'judul_arsip', 'jenis_arsip', 'status', 'id_kategori', 'file_arsip']);
 
         if ($request->category) {
             $data->where('id_kategori', $request->category);
         }
 
-        return DataTables::of($data)->make(true);
+        return DataTables::of($data)
+            ->editColumn('id_kategori', function ($row) {
+                return $row->category->nama_kategori;
+            })
+            ->addColumn('status', function ($row) {
+                return view('components.data-table.archive-status', compact(['row']));
+            })
+            ->addColumn('file_arsip', function ($row) {
+                return view('components.data-table.archive-file', compact(['row']));
+            })
+            ->rawColumns(['status'])
+            ->make(true);
 
         // return DataTables::of($data)
         //     ->editColumn('created_at', function ($data) {
