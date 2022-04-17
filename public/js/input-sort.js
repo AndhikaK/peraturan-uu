@@ -1,6 +1,7 @@
 function setSortable() {
     $("#sortable-input").sortable({
         handle: ".header",
+        containment: "#sortable-input",
         update: function () {
             updateLabel();
         },
@@ -8,6 +9,7 @@ function setSortable() {
 
     $("#sortable-input .content").sortable({
         handle: ".content-grab",
+        containment: ".content",
         update: function (event, item) {
             updateLabel();
         },
@@ -32,14 +34,14 @@ const updateLabel = () => {
 
 function addPasal(el) {
     let newPasal =
-        "<li class='border border-slate-300 rounded-lg overflow-hidden shadow-lg bg-white'>" +
+        "<li class='border border-slate-300 rounded-lg overflow-hidden shadow bg-white'>" +
         "<div class='header py-2 flex justify-center hover:bg-slate-100 border-b border-b-slate-300 cursor-move'>" +
         "<img src='/assets/svg/grabber.svg' class='rotate-90'>" +
         "</div>" +
         "<div class='title px-3 py-2 pb-3 font-bold'>Pasal</div>" +
         "<div class='content'>" +
         "<div class='content-item px-3 grid grid-cols-[1fr_auto_auto]'>" +
-        "<textarea name='' class='ayat-input w-full h-5 border-0 border-b-2 overflow-y-auto focus:ring-0 p-2 pt-0'></textarea>" +
+        "<textarea name='' class='ayat-input w-full h-5 border-0 border-b-2 border-b-slate-400  overflow-y-auto focus:ring-0 p-2 pt-0' required></textarea>" +
         "<div class='content-grab mb-5 cursor-move flex items-center hover:bg-slate-200 h-full'>" +
         "<img src='/assets/svg/grabber.svg' class='p-2'>" +
         "</div>" +
@@ -66,7 +68,7 @@ function addPasal(el) {
 function addInput(el) {
     let newInput =
         "<div class='content-item px-3 grid grid-cols-[1fr_auto_auto]'>" +
-        "<textarea name='' class='ayat-input w-full h-5 border-0 border-b-2 focus:ring-0 p-2 pt-0'></textarea>" +
+        "<textarea name='' class='ayat-input w-full h-5 border-0 border-b-2 border-b-slate-400  focus:ring-0 p-2 pt-0' required></textarea>" +
         "<div class='content-grab mb-5 cursor-move flex items-center hover:bg-slate-200 h-full'>" +
         "<img src='/assets/svg/grabber.svg' class='p-2'>" +
         "</div>" +

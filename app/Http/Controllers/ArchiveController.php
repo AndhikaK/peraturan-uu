@@ -101,6 +101,11 @@ class ArchiveController extends Controller
         ]);
     }
 
+    public function store(Request $request)
+    {
+        dd($request->all());
+    }
+
     public function createFile()
     {
         // PAGE SETUP
@@ -134,7 +139,7 @@ class ArchiveController extends Controller
         $file = $request->archive;
 
         $request->validate([
-            // 'file' => 'required|mimes:pdf',
+            'archive' => 'required|mimes:pdf',
         ]);
 
         // use of pdf parser to read content from pdf 
@@ -145,10 +150,11 @@ class ArchiveController extends Controller
         // get the pdf text
         $content = $pdf->getText();
         // make all char Lowercase
-        $contentLowerCase = strtolower($content);
-        $contentLowerCase = str_replace("\t", '', $contentLowerCase);
+        // $contentLowerCase = strtolower($content);
+        // remove tab
+        $content = str_replace("\t", '', $content);
         // explode by \n
-        $arrContent = explode("\n", $contentLowerCase);
+        $arrContent = explode("\n", $content);
 
         // REQURED INFORMATION
         $totalPasal = 62;
@@ -180,15 +186,29 @@ class ArchiveController extends Controller
             $tempContent = $arrContent[$i];
         }
 
-        dd($arrContent);
+        // CHANGE FONT TO LOWERCASE
+        $arrContentLowerCase = [];
+        $i = 0;
+        foreach ($arrContent as $content) {
+            $arrContentLowerCase[$i] = strtolower($content);
+            $i++;
+        }
+
+        // dd($arrContent, $arrContentLowerCase);
 
         $i = 0;
-        foreach ($arrContent as $idx => $content) {
+        $listPasal = [];
+        foreach ($arrContentLowerCase as $idx => $content) {
             // $content = preg_replace('/^\p{Z}+|\p{Z}+$/u', '', $content);
+            if (in_array($content, $listPasal)) {
+                break;
+            }
+
             if (strlen($content) < 15) {
                 if (str_contains($content, 'pasal')) {
                     $indexedPasal[$i]['index'] = $idx;
                     $indexedPasal[$i]['content'] = $content;
+                    array_push($listPasal, $content);
                     $i++;
                 }
             }
@@ -200,16 +220,56 @@ class ArchiveController extends Controller
             // EXTRACT EVERYTHING EXCEPT THE LAST INDEX
             if ($idx < count($indexedPasal) - 1) {
                 $pasalContent[$idx]['title'] = $content['content'];
-                $pasalContent[$idx]['content'] = array_slice($arrContent, $content['index'], $indexedPasal[$idx + 1]['index'] - $content['index']);
+                $pasalContent[$idx]['content'] = array_slice($arrContentLowerCase, $content['index'] + 1, $indexedPasal[$idx + 1]['index'] - $content['index'] - 1);
             }
             // EXTRAXT THE LAST INDEX
             if ($idx == count($indexedPasal) - 1) {
                 $pasalContent[$idx]['title'] = $content['content'];
-                $pasalContent[$idx]['content'] = array_slice($arrContent, $content['index']);
+                // $pasalContent[$idx]['content'] = array_slice($arrContentLowerCase, $content['index']);
+                $pasalContent[$idx]['content'][0] = 'Undang-Undang ini mulai berlaku pada saat diundangkan';
             }
         }
 
-        dd($pasalContent);
-        // dd($indexedPasal, $arrContent);
+        // DIVIDE THE PASAL CONTENT BASED ON AYAT
+        $pasalAyat = [];
+        $i = 0;
+        foreach ($pasalContent as $pasal) {
+            $pasalAyat[$i]['title'] = $pasal['title'];
+            $pasalAyat[$i]['content'] = [];
+            $currentAyat = 1;
+            foreach ($pasal['content'] as $ayat) {
+                $firstWord = explode(' ', $ayat)[0];
+                $firstWordLength = strlen($firstWord);
+                $firstChar = substr($firstWord, 0, 1);
+                $midleChar = substr($firstWord, 1, $firstWordLength - 2);
+                $lastChar = substr($firstWord, -1);
+                $arrayLength = count($pasalAyat[$i]['content']);
+                if ($firstChar == '(' && $lastChar == ')') {
+                    if (is_numeric($midleChar)) {
+                        if (empty($pasalAyat[$i]['content'])) {
+                            array_push($pasalAyat[$i]['content'], $ayat);
+                        } else {
+                            if ($midleChar == $currentAyat + 1) {
+                                array_push($pasalAyat[$i]['content'], $ayat);
+                                $currentAyat++;
+                            } else {
+                                $pasalAyat[$i]['content'][$arrayLength - 1] .= " " . $ayat;
+                            }
+                        }
+                    } else {
+                        $pasalAyat[$i]['content'][$arrayLength - 1] .= " " . $ayat;
+                    }
+                } else {
+                    if (empty($pasalAyat[$i]['content'])) {
+                        array_push($pasalAyat[$i]['content'], $ayat);
+                    } else {
+                        $pasalAyat[$i]['content'][$arrayLength - 1] .= " " . $ayat;
+                    }
+                }
+            }
+            $i++;
+        }
+
+        dd($pasalAyat);
     }
 }
