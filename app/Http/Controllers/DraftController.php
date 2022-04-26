@@ -28,7 +28,6 @@ class DraftController extends Controller
             ]
         ];
         // GET DATA
-        // $categories = Category::all();
         $data = [];
 
         return view('pages.draft', [

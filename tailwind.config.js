@@ -15,7 +15,11 @@ module.exports = {
         },
     },
 
-    plugins: [require("@tailwindcss/forms"), require("windstrap")],
+    plugins: [
+        require("@tailwindcss/forms"),
+        // require("windstrap"),
+        require("daisyui"),
+    ],
 
     purge: {
         layers: ["base", "utilities"],

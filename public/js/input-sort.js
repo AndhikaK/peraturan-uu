@@ -1,7 +1,7 @@
 function setSortable() {
     $("#sortable-input").sortable({
         handle: ".header",
-        containment: "#sortable-input",
+        // containment: "#sortable-input",
         update: function () {
             updateLabel();
         },
@@ -9,7 +9,7 @@ function setSortable() {
 
     $("#sortable-input .content").sortable({
         handle: ".content-grab",
-        containment: ".content",
+        // containment: ".content",
         update: function (event, item) {
             updateLabel();
         },

@@ -59,20 +59,6 @@ class ArchiveController extends Controller
             })
             ->rawColumns(['status'])
             ->make(true);
-
-        // return DataTables::of($data)
-        //     ->editColumn('created_at', function ($data) {
-        //         return $data->created_at->format('d-m-Y');
-        //     })
-        //     ->editColumn('updated_at', function ($data) {
-        //         return $data->updated_at->format('d-m-Y');
-        //     })
-        //     ->addColumn('checkbox', 'components.admin.table.checkbox')
-        //     ->addColumn('action', function ($row) use ($roles) {
-        //         return view('components.admin.table.manage-account__action', compact(['row', 'roles']));
-        //     })
-        //     ->rawColumns(['checkbox', 'action'])
-        //     ->make(true);
     }
 
     public function create()
@@ -85,8 +71,7 @@ class ArchiveController extends Controller
             'list' => [
                 ['title' => 'Arsip', 'url' => route('archive.index')],
                 ['title' => 'Arsip Baru', 'url' => ''],
-            ]
-
+            ],
         ];
         // GET DATA
         $categories = Category::all();
@@ -131,6 +116,10 @@ class ArchiveController extends Controller
             'navs' => $this->NavigationList(),
             'categories' => $categories,
         ]);
+    }
+
+    public function createFileConfirmation($data)
+    {
     }
 
     public function fileStore(Request $request)
@@ -220,7 +209,7 @@ class ArchiveController extends Controller
             // EXTRACT EVERYTHING EXCEPT THE LAST INDEX
             if ($idx < count($indexedPasal) - 1) {
                 $pasalContent[$idx]['title'] = $content['content'];
-                $pasalContent[$idx]['content'] = array_slice($arrContentLowerCase, $content['index'] + 1, $indexedPasal[$idx + 1]['index'] - $content['index'] - 1);
+                $pasalContent[$idx]['content'] = array_slice($arrContent, $content['index'] + 1, $indexedPasal[$idx + 1]['index'] - $content['index'] - 1);
             }
             // EXTRAXT THE LAST INDEX
             if ($idx == count($indexedPasal) - 1) {
@@ -253,23 +242,52 @@ class ArchiveController extends Controller
                                 array_push($pasalAyat[$i]['content'], $ayat);
                                 $currentAyat++;
                             } else {
-                                $pasalAyat[$i]['content'][$arrayLength - 1] .= " " . $ayat;
+                                $divider = $firstWordLength == 2 && $firstWord[1] == '.' ? "\n" : ' ';
+                                $pasalAyat[$i]['content'][$arrayLength - 1] .= $divider . $ayat;
                             }
                         }
                     } else {
-                        $pasalAyat[$i]['content'][$arrayLength - 1] .= " " . $ayat;
+                        $divider = $firstWordLength == 2 && $firstWord[1] == '.' ? "\n" : ' ';
+                        $pasalAyat[$i]['content'][$arrayLength - 1] .= $divider . $ayat;
                     }
                 } else {
                     if (empty($pasalAyat[$i]['content'])) {
                         array_push($pasalAyat[$i]['content'], $ayat);
                     } else {
-                        $pasalAyat[$i]['content'][$arrayLength - 1] .= " " . $ayat;
+                        $divider = $firstWordLength == 2 && $firstWord[1] == '.' ? "\n" : ' ';
+                        $pasalAyat[$i]['content'][$arrayLength - 1] .= $divider . $ayat;
                     }
                 }
             }
             $i++;
         }
 
-        dd($pasalAyat);
+        // dd($pasalAyat);
+
+        // PAGE SETUP
+        $pageTitle = 'Konfirmasi Arsip';
+        $active = 'Arsip';
+        $breadCrumbs = [
+            'bx-icon' => 'bx bx-notepad',
+            'list' => [
+                ['title' => 'Arsip', 'url' => route('archive.index')],
+                ['title' => 'Arsip Baru', 'url' => route('archive.create')],
+                ['title' => 'Upload', 'url' => ''],
+                ['title' => 'Konfirmasi', 'url' => ''],
+            ]
+
+        ];
+        // GET DATA
+        $categories = Category::all();
+
+        return view('pages.archive-file-create-confirmation', [
+            'user' => Auth::user(),
+            'pageTitle' => $pageTitle,
+            'active' => $active,
+            'breadCrumbs' => $breadCrumbs,
+            'navs' => $this->NavigationList(),
+            'categories' => $categories,
+            'result' => $pasalAyat,
+        ]);
     }
 }

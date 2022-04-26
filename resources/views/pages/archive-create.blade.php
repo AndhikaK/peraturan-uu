@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    {{-- <div id='container'>
+    <div id='container'>
         <form action="{{ route('archive.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="p-5 mb-5 grid gap-5 shadow border border-slate-300 border-t-8 border-t-sky-700 rounded-md overflow-hidden bg-white">
@@ -58,7 +58,7 @@
                 <button class="px-3 py-2 font-medium text-lg bg-sky-800 rounded text-white">Submit</button>
             </div>
         </form>
-    </div> --}}
+    </div>
 @endsection
 
 
