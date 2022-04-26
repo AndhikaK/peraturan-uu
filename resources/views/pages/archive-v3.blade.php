@@ -1,43 +1,38 @@
 @extends('design.design_1')
 
 @section('content')
-    <div class="grid lg:grid-cols-[1fr_3fr] gap-4">
-        {{-- FILTER --}}
-        <div>
-            <div class="p-3 bg-white rounded-lg border border-slate-300 border-t-2 border-t-orange-600">
-                <div>
-                    <i class='bx bxs-filter-alt text-lg'></i>
-                    <span class="ml-2 text-lg font-bold">Filter</span>
+    <div class="grid lg:grid-cols-[1fr_3fr] gap-5 rounded min-w-0">
+        <div class="">
+            <div class="p-5 px-0 flex flex-col gap-5">
+                <div class="flex flex-col gap-2">
+                    <label for="category" class="font-semibold">Kategori</label>
+                    <select name="category" class="w-full input-rounded-cyan">
+                        @foreach ($categories as $item)
+                            <option value="{{ $item->kategori_id }}">{{ $item->nama_kategori }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
-                <div>
-                    <div class="mb-3">
-                        <label class="block text-gray-700 text-sm font-medium mb-2" for="username">
-                            Kategori
-                        </label>
-                        <select name="category" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-3 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline text-sm">
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->kategori_id }}">{{ $category->nama_kategori }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <button id="applyFilter" class="block w-full bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-                        Terapkan
+                <div class="flex justify-end">
+                    <button id="applyFilter" class="btn-rounded-outline-cyan">
+                        Terapkan Filter
                     </button>
                 </div>
             </div>
         </div>
-        {{-- ARCHIVE --}}
-        <div class="p-3 bg-white rounded-lg border border-slate-300 border-t-2 border-t-emerald-900">
-            <div class="w-full">
+        <div class="bg-white rounded shadow-lg">
+            <div class="p-5 py-3 mb-3 flex justify-between items-center border-b-2 border-b-slate-200 font-bold">
+                <div>
+                    Arsip Undang-Undang
+                </div>
                 @auth
-                    <div class="mb-3 flex flex-row justify-end">
-                        <a href="{{ route('archive.create') }}" class="p-2 text-sm bg-sky-700 rounded-sm text-white font-bold">
-                            Tambah UU
-                        </a>
-                    </div>
+                    <button class="btn-solid-cyan">
+                        Arsip Baru
+                    </button>
                 @endauth
-                <table class="mt-3" id="myTable" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+            </div>
+            <div class="p-5 overflow-auto">
+                <table class="mt-3 overflow-auto" id="myTable" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                     <thead class="stripes hover">
                         <tr class="">
                             <th class="bg-sky-900 text-white">Peraturan</th>
@@ -52,6 +47,7 @@
                 </table>
             </div>
         </div>
+
     </div>
 @endsection
 

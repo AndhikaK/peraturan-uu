@@ -1,4 +1,4 @@
-@extends('layouts.app-layout')
+@extends('design.design_1')
 
 @section('content')
     <div class="p-3 bg-white rounded-md border border-slate-400 border-t-2 border-t-rose-700">

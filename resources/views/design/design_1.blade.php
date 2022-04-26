@@ -21,16 +21,19 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     {{-- DATATABLE CSS --}}
     <link rel="stylesheet" href="{{ asset('css/dataTable.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Poppins&display=swap" rel="stylesheet">
 </head>
 
-<body class="min-h-screen bg-slate-100 font-sans text-slate-700">
+<body class="min-h-screen bg-slate-100 text-slate-700">
 
     <div class="grid grid-rows-[auto_1fr_auto] min-h-screen">
         {{-- NAVBAR --}}
         @include('design.navbar_1')
         {{-- MAIN CONTENT --}}
-        <div class="">
-            dfalf
+        <div class="p-5 lg:p-12 lg:py-7">
+            @yield('content')
         </div>
         {{-- FOOTER --}}
         <div class="py-3 text-center bg-slate-200">

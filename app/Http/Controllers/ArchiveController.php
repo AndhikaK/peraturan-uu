@@ -27,9 +27,9 @@ class ArchiveController extends Controller
 
         ];
         // GET DATA
-        $categories = Category::all();
+        $categories = Category::get();
 
-        return view('pages.archive-v2', [
+        return view('pages.archive-v3', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
             'active' => $active,
