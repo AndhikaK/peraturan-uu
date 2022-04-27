@@ -3,24 +3,7 @@
 @section('content')
     <div class="p-5 lg:p-14 lg:py-7">
         <div class="grid lg:grid-cols-[1fr_3fr] gap-5 rounded min-w-0">
-            <div class="">
-                <div class="p-5 px-0 flex flex-col gap-5">
-                    <div class="flex flex-col gap-2">
-                        <label for="category" class="font-semibold">Kategori</label>
-                        <select name="category" class="w-full input-rounded-cyan">
-                            @foreach ($categories as $item)
-                                <option value="{{ $item->kategori_id }}">{{ $item->nama_kategori }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="flex justify-end">
-                        <button id="applyFilter" class="btn-rounded-outline-cyan">
-                            Terapkan Filter
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <div></div>
             <div class="bg-white rounded shadow-lg">
                 <div class="p-5 py-3 mb-3 flex justify-between items-center border-b-2 border-b-slate-200 font-bold">
                     <div>
@@ -61,7 +44,7 @@
                 // dataTable query
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('archive.data') }}',
+                ajax: '{{ route('harmonisasi.result-data') }}',
                 columns: [{
                         data: 'uu',
                         name: 'uu'
@@ -71,8 +54,8 @@
                         name: 'tentang'
                     },
                     {
-                        data: 'id_kategori',
-                        name: 'id_kategori'
+                        data: 'presentase',
+                        name: 'presentase'
                     },
                     {
                         data: 'status',

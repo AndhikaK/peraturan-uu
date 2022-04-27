@@ -49,13 +49,13 @@
     <label class="p-5 bg-white rounded-md modal-box relative">
         <div class="flex justify-between">
             <h2 class="text-lg w-10/12 font-bold">Menu</h2>
-            <label for="smallMenuModal" class="rounded-full text-red-500">
+            <label for="smallMenuModal" class="rounded-full text-red-500 cursor-pointer">
                 <i class='bx bx-x text-3xl'></i>
             </label>
         </div>
         <div class="flex flex-col items-start">
             @foreach ($navs as $nav)
-                <a href="{{ $nav['route'] }}">
+                <a href="{{ $nav['route'] }}" class="w-full">
                     <button class="py-4 w-full text-left hover:font-bold hover:text-cyan-600 {{ $active == $nav['title'] ? 'font-bold text-cyan-600' : '' }}">
                         {{ $nav['title'] }}
                     </button>
