@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\NavigationList;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends Controller
 {
+    use NavigationList;
     /**
      * Display the login view.
      *
@@ -17,7 +19,25 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-        return view('auth.login');
+        // PAGE SETUP
+        $pageTitle = 'Login';
+        $active = 'Login';
+        $breadCrumbs = [
+            'bx-icon' => 'bx bx-notepad',
+            'list' => [
+                ['title' => 'Login', 'url' => route('login')],
+            ]
+
+        ];
+        // GET DATA
+
+        return view('pages.login', [
+            'user' => Auth::user(),
+            'pageTitle' => $pageTitle,
+            'active' => $active,
+            'breadCrumbs' => $breadCrumbs,
+            'navs' => $this->NavigationList(),
+        ]);
     }
 
     /**

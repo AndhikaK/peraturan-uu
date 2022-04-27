@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\DraftController;
+use App\Http\Controllers\HarmonisasiController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\NewDesignController;
 use App\Models\Archive;
@@ -24,6 +25,7 @@ Route::get('/', [IndexController::class, 'index'])->name('index');
 Route::resources([
     'archive' => ArchiveController::class,
     'draft' => DraftController::class,
+    'harmonisasi' => HarmonisasiController::class,
 ]);
 
 // ROUTE FOR DATATABLES DATA

@@ -24,17 +24,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato&family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 </head>
 
-<body class="min-h-screen bg-slate-100 text-slate-700">
+<body class="min-h-screen text-slate-700 bg-gradient-to-tr from-slate-100 to-slate-50">
 
     <div class="grid grid-rows-[auto_1fr_auto] min-h-screen">
         {{-- NAVBAR --}}
         @include('design.navbar_1')
         {{-- MAIN CONTENT --}}
-        <div class="p-5 lg:p-12 lg:py-7">
-            @yield('content')
-        </div>
+        {{-- <div class="p-5 lg:p-12 lg:py-7"> --}}
+        @yield('content')
+        {{-- </div> --}}
         {{-- FOOTER --}}
         <div class="py-3 text-center bg-slate-200">
             Copyright &copy; {{ date('Y') }} Powered by Universitas Lampung
@@ -45,6 +46,7 @@
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/b-2.0.1/fc-4.0.1/sl-1.3.3/datatables.min.js"></script>
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 
     <script src="{{ asset('js/dataTableFilter.js') }}"></script>
 

@@ -41,7 +41,7 @@ class ArchiveController extends Controller
 
     public function getData(Request $request)
     {
-        $data = Archive::with(['category'])->select(['id_arsip', 'judul_arsip', 'jenis_arsip', 'status', 'id_kategori', 'file_arsip']);
+        $data = Archive::with(['category'])->select(['id_tbl_uu', 'uu', 'tentang', 'status', 'id_kategori', 'file_arsip']);
 
         if ($request->category) {
             $data->where('id_kategori', $request->category);

@@ -9,8 +9,8 @@ class Archive extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbl_arsip';
-    protected $primaryKey = 'id_arsip';
+    protected $table = 'uu';
+    protected $primaryKey = 'id_table_uu';
 
     public function category()
     {

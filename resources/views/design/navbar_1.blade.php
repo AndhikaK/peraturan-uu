@@ -1,4 +1,4 @@
-<div class="hidden lg:flex px-12 bg-white justify-between items-center border-b">
+<div class="hidden lg:flex px-12 bg-white justify-between items-center">
     @include('design.page-logo')
     <div>
         {{-- NAVIGATION MENU --}}

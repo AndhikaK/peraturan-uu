@@ -1,41 +1,34 @@
-@extends('layouts.index-layout')
+@extends('design.design_1')
 
 @section('content')
-    <div class="grid lg:grid-cols-[1fr_3fr] gap-4">
-        {{-- FILTER --}}
-        <div>
-            <div class="transition duration-200 ease-in-out rounded-md border border-slate-300 hover:shadow-lg">
-                <div class="p-3 bg-rose-500 text-slate-50 font-semibold rounded-t-md">
-                    Filter
-                </div>
-                <div class="p-3 rounded-b-lg bg-white">
-                    <form action="">
-                        <div class="mb-3">
-                            <label class="block text-gray-700 text-sm font-medium mb-2" for="username">
-                                Kategori
-                            </label>
-                            <select name="category"
-                                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-3 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+    <div class="container mt-2">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="mt-2 mb-2">Drag & Drop File Uploading using Laravel 8 Dropzone JS</h1>
 
-                            </select>
-                        </div>
-                        <button
-                            class="block w-full bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                            type="button">
-                            Terapkan
-                        </button>
-                    </form>
-                </div>
+                <form action="{{ route('harmonisasi.store') }}" method="post" enctype="multipart/form-data" id="image-upload" class="dropzone">
+                    @csrf
+                    <div>
+                        <h3>Upload Multiple Image By Click On Box</h3>
+                    </div>
+                </form>
             </div>
-        </div>
-        {{-- ARCHIVE --}}
-        <div class="p-5 bg-white rounded-lg shadow-lg">
-
         </div>
     </div>
 @endsection
 
 @section('datatable')
+    <script type="text/javascript">
+        let dropZone = Dropzone.options.imageUpload = {
+            maxFiles: 1,
+            acceptedFiles: ".pdf",
+            init: function() {
+                this.on("addedfile", file => {
+                    console.log("A file has been added");
+                });
+            }
+        };
+    </script>
     <script>
         $(document).ready(function() {
             var events = $('#events');

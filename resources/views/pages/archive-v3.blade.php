@@ -62,12 +62,12 @@
                 serverSide: true,
                 ajax: '{{ route('archive.data') }}',
                 columns: [{
-                        data: 'judul_arsip',
-                        name: 'judul_arsip'
+                        data: 'uu',
+                        name: 'uu'
                     },
                     {
-                        data: 'jenis_arsip',
-                        name: 'jenis_arsip'
+                        data: 'tentang',
+                        name: 'tentang'
                     },
                     {
                         data: 'id_kategori',

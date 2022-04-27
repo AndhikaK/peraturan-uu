@@ -15,7 +15,7 @@ class IndexController extends Controller
         $pageTitle = 'Beranda';
         $active = 'Beranda';
 
-        return view('layouts.app-layout', [
+        return view('pages.index', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
             'active' => $active,
