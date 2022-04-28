@@ -24,7 +24,7 @@ class NewDesignController extends Controller
         // GET DATA
         $categories = Category::all();
 
-        return view('design.design_1', [
+        return view('layouts.app-layout', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
             'active' => $active,

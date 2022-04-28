@@ -29,7 +29,7 @@ class ArchiveController extends Controller
         // GET DATA
         $categories = Category::get();
 
-        return view('pages.archive-v3', [
+        return view('pages.archive', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
             'active' => $active,

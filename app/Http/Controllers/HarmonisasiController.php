@@ -54,6 +54,10 @@ class HarmonisasiController extends Controller
         $url = 'http://localhost:5000/harmonisasi/wordvec/pembanding';
         $data = json_decode(file_get_contents($url))->values;
 
-        return DataTables::of($data)->make(true);
+        return DataTables::of($data)
+            ->addColumn('file_arsip', function ($row) {
+                return view('components.data-table.harmonisasi-file', compact(['row']));
+            })
+            ->make(true);
     }
 }

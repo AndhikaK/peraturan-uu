@@ -1,4 +1,4 @@
-@extends('design.design_1')
+@extends('layouts.app-layout')
 
 @section('content')
     <div class="p-5 lg:p-14 lg:py-7">
@@ -21,8 +21,7 @@
                             <tr class="">
                                 <th class="bg-sky-900 text-white">Peraturan</th>
                                 <th class="bg-sky-900 text-white">Tentang</th>
-                                <th class="bg-sky-900 text-white">Kategori</th>
-                                <th class="bg-sky-900 text-white">Status</th>
+                                <th class="bg-sky-900 text-white">Similaritas</th>
                                 <th class="bg-sky-900 text-white">
                                     <i class='bx bxs-download'></i>
                                 </th>
@@ -58,10 +57,6 @@
                         name: 'presentase'
                     },
                     {
-                        data: 'status',
-                        name: 'status',
-                    },
-                    {
                         data: 'file_arsip',
                         name: 'file_arsip'
                     }
@@ -75,18 +70,14 @@
                         defaultContent: '',
                     },
                     {
-                        targets: [3, 4],
-                        orderable: false,
-                    },
-                    {
-                        targets: [4],
-                        orderable: false,
-                        className: "text-center",
+                        targets: [2],
+                        className: "text-center font-bold"
                     },
                     {
                         targets: [3],
-                        className: "text-center whitespace-nowrap"
-                    }
+                        orderable: false,
+                        className: "text-center white-space-nowrap",
+                    },
                 ],
                 stripeClasses: []
             });

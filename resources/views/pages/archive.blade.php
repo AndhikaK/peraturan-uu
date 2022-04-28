@@ -1,4 +1,4 @@
-@extends('design.design_1')
+@extends('layouts.app-layout')
 
 @section('content')
     <div class="p-5 lg:p-14 lg:py-7">

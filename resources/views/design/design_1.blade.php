@@ -31,7 +31,7 @@
 
     <div class="grid grid-rows-[auto_1fr_auto] min-h-screen">
         {{-- NAVBAR --}}
-        @include('design.navbar_1')
+        @include('layouts.navbar')
         {{-- MAIN CONTENT --}}
         {{-- <div class="p-5 lg:p-12 lg:py-7"> --}}
         @yield('content')

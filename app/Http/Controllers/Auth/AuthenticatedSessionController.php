@@ -31,7 +31,7 @@ class AuthenticatedSessionController extends Controller
         ];
         // GET DATA
 
-        return view('pages.login', [
+        return view('auth.login', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
             'active' => $active,
