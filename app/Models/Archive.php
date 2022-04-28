@@ -10,7 +10,7 @@ class Archive extends Model
     use HasFactory;
 
     protected $table = 'uu';
-    protected $primaryKey = 'id_table_uu';
+    protected $primaryKey = 'id_tbl_uu';
 
     public function category()
     {

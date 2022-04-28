@@ -9,8 +9,16 @@
 }
 
 @layer components {
+    .btn-cyan {
+        @apply p-1.5 px-7 text-cyan-600 rounded bg-transparent border border-transparent hover:text-white hover:bg-cyan-600 focus:border-transparent focus:outline-none focus:ring focus:ring-cyan-600/30;
+    }
+
     .btn-solid-cyan {
         @apply p-1.5 px-7 text-slate-50 rounded bg-cyan-600 border border-cyan-600 hover:text-cyan-700 hover:bg-white focus:border-transparent focus:outline-none focus:ring focus:ring-cyan-600/30;
+    }
+
+    .btn-outline-cyan {
+        @apply p-1.5 px-7 text-cyan-600 rounded bg-white border border-cyan-600 hover:text-white hover:bg-cyan-600 focus:border-transparent focus:outline-none focus:ring focus:ring-cyan-600/30;
     }
 
     .btn-rounded-solid-cyan {

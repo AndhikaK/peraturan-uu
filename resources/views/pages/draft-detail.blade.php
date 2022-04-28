@@ -19,12 +19,12 @@
     </div>
 
     <div class="flex border-b mt-5">
-        <a href="{{ route('draft.show', $archiveUU->id_arsip) . '?view=penuh' }}">
+        <a href="{{ route('draft.show', $archiveUU->id_tbl_uu) . '?view=penuh' }}">
             <button class="h-10 px-4 py-2 -mb-px text-sm text-center text-gray-700 hover:border-gray-400 bg-transparent border-b-2 {{ $view == 'penuh' || !isset($view) ? 'border-blue-500 text-blue-600 hover:border-blue-500' : '' }} sm:text-base  whitespace-nowrap focus:outline-none font-bold">
                 Naskah Penuh
             </button>
         </a>
-        <a href="{{ route('draft.show', $archiveUU->id_arsip) . '?view=pasal' }}">
+        <a href="{{ route('draft.show', $archiveUU->id_tbl_uu) . '?view=pasal' }}">
             <button class="h-10 px-4 py-2 -mb-px text-sm text-center text-gray-700 hover:border-gray-400 bg-transparent border-b-2 {{ $view == 'pasal' ? 'border-blue-500 text-blue-600 hover:border-blue-500' : '' }} sm:text-base  whitespace-nowrap focus:outline-none font-bold">
                 Pasal
             </button>

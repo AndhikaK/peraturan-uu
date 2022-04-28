@@ -28,6 +28,7 @@ class DraftController extends Controller
             ]
         ];
         // GET DATA
+        $mode = $request->mode;
         $data = [];
 
         return view('pages.draft', [
@@ -37,6 +38,7 @@ class DraftController extends Controller
             'breadCrumbs' => $breadCrumbs,
             'navs' => $this->NavigationList(),
             'data' => $data,
+            'mode' => $mode,
         ]);
     }
 
@@ -107,39 +109,30 @@ class DraftController extends Controller
                 foreach ($bottomCos as $key => $value) {
                     $bottomCos[$key] = sqrt(array_sum($bottomCos[$key]));
                 }
-                // echo"count<pre>";print_r($bottomCos[5]);
                 foreach ($query1 as $key => $value) {
                     $bottomQuery[$key] = pow($query1[$key], 2);
                 }
                 $bottomQuery = sqrt(array_sum($bottomQuery));
-                // echo"<pre>";print_r($bottomQuery);
 
                 foreach ($bottomCos as $key => $value) {
                     $fixBottomCos[$key] = $value * $bottomQuery;
                 }
-                // echo"<pre>";print_r($fixBottomCos);die;
                 foreach ($newTopCos as $key => $value) {
                     $cosSim[$key] = $newTopCos[$key] / $fixBottomCos[$key];
                 }
-                // echo"count<pre>";print_r($newTopCos);
-                // echo"count<pre>";print_r($cosSim);die;
 
-
-                // $listData = $this->m_kelola->getArsip();
                 foreach ($listData as $key => $value) {
                     if (!empty($newKataSama[$key])) {
-                        $data[$key]['id_arsip'] = $listData[$key]->id_arsip;
-                        // $data[$key]['judul_arsip'] = $listData[$key]->judul_arsip;
-                        $data[$key]['judul_arsip'] = $listData[$key]->judul_arsip;
-                        $data[$key]['jenis_arsip'] = $listData[$key]->jenis_arsip;
+                        $data[$key]['id_arsip'] = $listData[$key]->id_tbl_uu;
+                        $data[$key]['judul_arsip'] = $listData[$key]->uu;
+                        $data[$key]['jenis_arsip'] = $listData[$key]->tentang;
                         $data[$key]['kategori'] = $listData[$key]->category->nama_kategori;
                         $data[$key]['kataSama'] = $newKataSama[$key];
                         $data[$key]['cosSim'] = $cosSim[$key];
                     } else {
-                        $data[$key]['id_arsip'] = $listData[$key]->id_arsip;
-                        // $data[$key]['judul_arsip'] = $listData[$key]->judul_arsip;
-                        $data[$key]['judul_arsip'] = $listData[$key]->judul_arsip;
-                        $data[$key]['jenis_arsip'] = $listData[$key]->jenis_arsip;
+                        $data[$key]['id_arsip'] = $listData[$key]->id_tbl_uu;
+                        $data[$key]['judul_arsip'] = $listData[$key]->uu;
+                        $data[$key]['jenis_arsip'] = $listData[$key]->tentang;
                         $data[$key]['kategori'] = $listData[$key]->category->nama_kategori;
                         $data[$key]['kataSama'] = '0';
                         $data[$key]['cosSim'] = 0;
@@ -147,9 +140,9 @@ class DraftController extends Controller
                 }
             } else {
                 foreach ($listData as $key => $value) {
-                    $data[$key]['id_arsip'] = $listData[$key]->id_arsip;
-                    $data[$key]['judul_arsip'] = $listData[$key]->judul_arsip;
-                    $data[$key]['jenis_arsip'] = $listData[$key]->jenis_arsip;
+                    $data[$key]['id_arsip'] = $listData[$key]->id_tbl_uu;
+                    $data[$key]['judul_arsip'] = $listData[$key]->uu;
+                    $data[$key]['jenis_arsip'] = $listData[$key]->tentang;
                     $data[$key]['kategori'] = $listData[$key]->category->nama_kategori;
                     $data[$key]['kataSama'] = 0;
                     $data[$key]['cosSim'] = 0;
@@ -180,7 +173,7 @@ class DraftController extends Controller
     }
 
 
-    public function show($id, Request $request)
+    public function show(Request $request, $id)
     {
         // PAGE SETUP
         $pageTitle = 'Detail';
