@@ -7,12 +7,12 @@
             <div class="bg-white rounded shadow-lg">
                 <div class="p-5 py-3 mb-3 flex justify-between items-center border-b-2 border-b-slate-200 font-bold">
                     <div>
-                        Akun
+                        Rumpun
                     </div>
                     @auth
-                        <a href="{{ route('account.create') }}">
+                        <a href="{{ route('category.create') }}">
                             <button class="btn-solid-cyan">
-                                Akun Baru
+                                Rumpun Baru
                             </button>
                         </a>
                     @endauth
@@ -22,8 +22,6 @@
                         <thead class="stripes hover">
                             <tr class="">
                                 <th class="bg-sky-900 text-white">Nama</th>
-                                <th class="bg-sky-900 text-white">Email</th>
-                                <th class="bg-sky-900 text-white">Role</th>
                                 <th class="bg-sky-900 text-white">
                                     <i class='bx bxs-download'></i>
                                 </th>
@@ -45,22 +43,14 @@
                 // dataTable query
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('account.data') }}',
+                ajax: '{{ route('category.data') }}',
                 columns: [{
-                        data: 'name',
-                        name: 'name'
+                        data: 'nama_kategori',
+                        name: 'nama_kategori'
                     },
                     {
-                        data: 'email',
-                        name: 'email'
-                    },
-                    {
-                        data: 'role',
-                        name: 'role'
-                    },
-                    {
-                        data: 'account-actions',
-                        name: 'account-actions'
+                        data: 'category-actions',
+                        name: 'category-actions'
                     }
                 ],
                 order: [],
@@ -72,7 +62,7 @@
                         defaultContent: '',
                     },
                     {
-                        targets: [3],
+                        targets: [1],
                         orderable: false,
                         className: "text-center whitespace-nowrap",
                     },

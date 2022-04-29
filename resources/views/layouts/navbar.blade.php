@@ -12,10 +12,10 @@
             @endforeach
             @auth
                 <div class="dropdown dropdown-end dropdown-hover">
-                    <label tabindex="0" class="p-3 py-5 font-medium hover:text-cyan-600 border-y-4 border-y-transparent {{ $active == $nav['title'] ? 'border-b-cyan-600 font-bold text-cyan-600' : '' }}">Admin</label>
+                    <label tabindex="0" class="p-3 py-5 font-medium hover:text-cyan-600 border-y-4 border-y-transparent {{ $active == 'Admin' ? 'border-b-cyan-600 font-bold text-cyan-600' : '' }}">Admin</label>
                     <ul tabindex="0" class="dropdown-content menu p-2 shadow-lg bg-white rounded-md translate-y-2">
                         <li class="text-slate-700"><a href="{{ route('account.index') }}" class="whitespace-nowrap">Kelola Akun</a></li>
-                        <li class="text-slate-700"><a class="whitespace-nowrap">Kelola Rumpun</a></li>
+                        <li class="text-slate-700"><a href="{{ route('category.index') }}" class="whitespace-nowrap">Kelola Rumpun</a></li>
                         <li class="text-slate-700"><a class="whitespace-nowrap">Kelola Undang-Undang</a></li>
                     </ul>
                 </div>

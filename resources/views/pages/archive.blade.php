@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="p-5 lg:p-14 lg:py-7">
-        <div class="grid lg:grid-cols-[1fr_3fr] gap-5 rounded min-w-0">
+        <div class="grid lg:grid-cols-[1fr_3fr] gap-5 rounded overflow-x-scroll">
             <div class="">
                 <div class="p-5 px-0 flex flex-col gap-5">
                     <div class="flex flex-col gap-2">
