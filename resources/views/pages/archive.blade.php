@@ -27,9 +27,9 @@
                         Arsip Undang-Undang
                     </div>
                     @auth
-                        <button class="btn-solid-cyan">
+                        <a href="{{ route('archive.create') }}" class="btn-solid-cyan">
                             Arsip Baru
-                        </button>
+                        </a>
                     @endauth
                 </div>
                 <div class="p-5 overflow-auto">

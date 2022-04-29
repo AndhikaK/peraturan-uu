@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Archive;
 use App\Models\Category;
+use App\Models\Pasal;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Stmt\Foreach_;
@@ -61,6 +63,37 @@ class ArchiveController extends Controller
             ->make(true);
     }
 
+    public function show($id)
+    {
+        // PAGE SETUP
+        $pageTitle = 'Arsip';
+        $active = 'Arsip';
+        $breadCrumbs = [
+            'bx-icon' => 'bx bx-notepad',
+            'list' => [
+                ['title' => 'Arsip', 'url' => route('archive.index')],
+            ]
+        ];
+
+        $archive = Archive::with(['category'])->find($id);
+        $pasals = Pasal::where('id_tbl_uu', $id)
+            ->where(function ($query) {
+                $query->where('uud_section', 'pasal')
+                    ->orWhere('uud_section', 'ayat');
+            })
+            ->orderBy('id')->get();
+
+        return view('pages.archive.show', [
+            'user' => Auth::user(),
+            'pageTitle' => $pageTitle,
+            'active' => $active,
+            'breadCrumbs' => $breadCrumbs,
+            'navs' => $this->NavigationList(),
+            'archive' => $archive,
+            'pasals' => $pasals,
+        ]);
+    }
+
     public function create()
     {
         // PAGE SETUP
@@ -76,7 +109,7 @@ class ArchiveController extends Controller
         // GET DATA
         $categories = Category::all();
 
-        return view('pages.archive-create', [
+        return view('pages.archive.create', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
             'active' => $active,
@@ -88,7 +121,46 @@ class ArchiveController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
+        // VALIDATE REQUEST INPUT
+        $request->validate([
+            'uu' => 'required',
+            'tentang' => 'required',
+            'arsip' => 'required',
+            'category' => 'required'
+        ]);
+
+        $uuPasals = [];
+        foreach ($request->all() as $key => $item) {
+            if (str_contains($key, 'pasal')) {
+                $item = str_replace("\r\n", '<br>', $item);
+                $key = str_replace("_", ' ', $key);
+                $uuPasals[$key] = $item;
+            }
+        }
+        // dd($request->all());
+
+        // try {
+        // SAVE ARCHIVE FILE PDF
+        $file = $request->file('arsip');
+
+        $fileName = 'NewArsip-' . time() . '.' . $file->extension();
+
+        $archive = Archive::create([
+            'uu' => $request->uu,
+            'tentang' => $request->tentang,
+            'file_arsip' => $fileName,
+            'id_kategori' => $request->category,
+            'text' => 'empty',
+            'status' => 1,
+        ]);
+
+        dd($archive);
+
+        $file->move(public_path('assets/hitung'), $fileName);
+        // } catch (Exception $e) {
+        // return redirect(route('archive.create'))->with('failed', 'Something wrong!');
+        // }
+        // dd($request->all());
     }
 
     public function createFile()
@@ -103,12 +175,11 @@ class ArchiveController extends Controller
                 ['title' => 'Arsip Baru', 'url' => route('archive.create')],
                 ['title' => 'Upload', 'url' => ''],
             ]
-
         ];
         // GET DATA
         $categories = Category::all();
 
-        return view('pages.archive-file-create', [
+        return view('pages.archive.create-file', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
             'active' => $active,
@@ -280,7 +351,7 @@ class ArchiveController extends Controller
         // GET DATA
         $categories = Category::all();
 
-        return view('pages.archive-file-create-confirmation', [
+        return view('pages.archive.create', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
             'active' => $active,

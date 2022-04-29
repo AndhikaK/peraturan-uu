@@ -5,17 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Archive extends Model
+class Pasal extends Model
 {
     use HasFactory;
 
-    protected $table = 'uu';
-    protected $primaryKey = 'id_tbl_uu';
-
-    protected $guarded = ['id_tbl_uu'];
-    const UPDATED_AT = null;
-    const CREATED_AT = null;
-
+    protected $table = 'uu_pasal_html';
+    protected $primaryKey = 'id';
 
     public function category()
     {

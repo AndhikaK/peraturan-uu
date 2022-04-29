@@ -70,7 +70,14 @@
                     </button>
                 </a>
             @endforeach
-
+            <a class="py-4 w-full text-left hover:font-bold hover:text-cyan-600 {{ $active == 'Admin' ? 'font-bold text-cyan-600' : '' }}" data-bs-toggle="collapse" href="#adminNavCollapse" role="button" aria-expanded="false" aria-controls="adminNavCollapse">Admin</a>
+            <div class="collapse" id="adminNavCollapse">
+                <ul tabindex="0" class="p-2 pl-5 shadow-lg bg-white rounded-md ">
+                    <li class="list-disc text-slate-700"><a href="{{ route('account.index') }}" class="whitespace-nowrap">Kelola Akun</a></li>
+                    <li class="list-disc text-slate-700"><a href="{{ route('category.index') }}" class="whitespace-nowrap">Kelola Rumpun</a></li>
+                    <li class="list-disc text-slate-700"><a class="whitespace-nowrap">Kelola Undang-Undang</a></li>
+                </ul>
+            </div>
         </div>
         <div class="py-5 flex gap-3 border-t border-t-slate-300">
             @guest

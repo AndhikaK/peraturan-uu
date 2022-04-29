@@ -26,7 +26,7 @@ const updateLabel = () => {
         var listInputItems = $(li).find(".content-item");
         listInputItems.each(function (i, listInput) {
             var ayatInput = $(listInput).find(".ayat-input");
-            ayatInput.attr("name", `pasal~${idx + 1}-ayat~${i + 1}`);
+            ayatInput.attr("name", `pasal~${idx + 1} ayat~${i + 1}`);
             ayatInput.attr("placeholder", `Ayat ${i + 1}`);
         });
     });
