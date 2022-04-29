@@ -19,6 +19,8 @@
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
     {{-- TAILWIND CSS --}}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    {{-- CHECKBOX BUTTON LIKE STYLE --}}
+    <link rel="stylesheet" href="{{ asset('css/button-like-checkbox.css') }}">
     {{-- DATATABLE CSS --}}
     <link rel="stylesheet" href="{{ asset('css/dataTable.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,7 +39,7 @@
         @yield('content')
         {{-- </div> --}}
         {{-- FOOTER --}}
-        <div class="py-3 text-center bg-slate-200">
+        <div class="py-3 text-center text-sm bg-slate-200">
             Copyright &copy; {{ date('Y') }} Powered by Universitas Lampung
         </div>
     </div>

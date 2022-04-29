@@ -31,6 +31,7 @@ Route::resources([
 // ROUTE FOR DATATABLES DATA
 Route::get('archive_data', [ArchiveController::class, 'getData'])->name('archive.data');
 Route::get('draft_data', [DraftController::class, 'hitungCousine'])->name('draft.data');
+Route::get('draft-pasal', [DraftController::class, 'calcPasalSimilarity'])->name('draft.calc-pasal');
 
 Route::get('archive_file_create', [ArchiveController::class, 'createFile'])->name('archive-file.create');
 

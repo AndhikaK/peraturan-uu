@@ -17,7 +17,7 @@ module.exports = {
 
     plugins: [
         require("@tailwindcss/forms"),
-        // require("windstrap"),
+        require("windstrap"),
         require("daisyui"),
     ],
 

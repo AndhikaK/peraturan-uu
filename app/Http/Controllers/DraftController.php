@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\StemmingTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Sastrawi\Stemmer\StemmerFactory;
 use Smalot\PdfParser\Parser;
 use Yajra\DataTables\Contracts\DataTable;
@@ -40,6 +41,17 @@ class DraftController extends Controller
             'data' => $data,
             'mode' => $mode,
         ]);
+    }
+
+    public function calcPasalSimilarity(Request $request)
+    {
+        dd($request);
+        $wordvecPasal = Http::post('localhost:5000/wordvecPasal', [
+            'kalimat' => $request->theme,
+            'kategori' => '',
+        ]);
+
+        return $wordvecPasal['values'];
     }
 
     public function hitungCousine(Request $request)
