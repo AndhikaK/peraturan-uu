@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\DraftController;
 use App\Http\Controllers\HarmonisasiController;
@@ -27,6 +28,14 @@ Route::resources([
     'draft' => DraftController::class,
     'harmonisasi' => HarmonisasiController::class,
 ]);
+
+Route::middleware(['auth'])->group(function () {
+    Route::resources([
+        'account' => AccountController::class,
+    ]);
+
+    Route::get('account-data', [AccountController::class, 'accountData'])->name('account.data');
+});
 
 // ROUTE FOR DATATABLES DATA
 Route::get('archive_data', [ArchiveController::class, 'getData'])->name('archive.data');

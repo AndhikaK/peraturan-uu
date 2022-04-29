@@ -14,7 +14,9 @@
                 <div class="dropdown dropdown-end dropdown-hover">
                     <label tabindex="0" class="p-3 py-5 font-medium hover:text-cyan-600 border-y-4 border-y-transparent {{ $active == $nav['title'] ? 'border-b-cyan-600 font-bold text-cyan-600' : '' }}">Admin</label>
                     <ul tabindex="0" class="dropdown-content menu p-2 shadow-lg bg-white rounded-md translate-y-2">
-                        <li class="text-slate-700"><a class="whitespace-nowrap">Item 2</a></li>
+                        <li class="text-slate-700"><a href="{{ route('account.index') }}" class="whitespace-nowrap">Kelola Akun</a></li>
+                        <li class="text-slate-700"><a class="whitespace-nowrap">Kelola Rumpun</a></li>
+                        <li class="text-slate-700"><a class="whitespace-nowrap">Kelola Undang-Undang</a></li>
                     </ul>
                 </div>
             @endauth
@@ -46,7 +48,6 @@
     <label for="smallMenuModal" class="p-1 px-2 rounded-md bg-cyan-600 focus:outline-none focus:ring focus:ring-cyan-200">
         <i class='bx bx-menu-alt-left text-white text-2xl'></i>
     </label>
-
 </div>
 <!-- SMALL NAVIGATION MENU MODAL -->
 <!-- The button to open modal -->

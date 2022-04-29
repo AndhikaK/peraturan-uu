@@ -34,6 +34,10 @@
     <div class="grid grid-rows-[auto_1fr_auto] min-h-screen">
         {{-- NAVBAR --}}
         @include('layouts.navbar')
+
+        {{-- VALIDATION ERROR --}}
+        @include('layouts.alerts')
+
         {{-- MAIN CONTENT --}}
         {{-- <div class="p-5 lg:p-12 lg:py-7"> --}}
         @yield('content')
