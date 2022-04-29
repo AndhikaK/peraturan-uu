@@ -16,7 +16,7 @@
                     <ul tabindex="0" class="dropdown-content menu p-2 shadow-lg bg-white rounded-md translate-y-2">
                         <li class="text-slate-700"><a href="{{ route('account.index') }}" class="whitespace-nowrap">Kelola Akun</a></li>
                         <li class="text-slate-700"><a href="{{ route('category.index') }}" class="whitespace-nowrap">Kelola Rumpun</a></li>
-                        <li class="text-slate-700"><a class="whitespace-nowrap">Kelola Undang-Undang</a></li>
+                        <li class="text-slate-700"><a href="{{ route('archive.index') }}" class="whitespace-nowrap">Kelola Undang-Undang</a></li>
                     </ul>
                 </div>
             @endauth
@@ -50,9 +50,6 @@
     </label>
 </div>
 <!-- SMALL NAVIGATION MENU MODAL -->
-<!-- The button to open modal -->
-
-<!-- Put this part before </body> tag -->
 <input type="checkbox" id="smallMenuModal" class="modal-toggle">
 <label for="smallMenuModal" class="modal cursor-pointer">
     <label class="p-5 bg-white rounded-md modal-box relative">
@@ -75,7 +72,7 @@
                 <ul tabindex="0" class="p-2 pl-5 shadow-lg bg-white rounded-md ">
                     <li class="list-disc text-slate-700"><a href="{{ route('account.index') }}" class="whitespace-nowrap">Kelola Akun</a></li>
                     <li class="list-disc text-slate-700"><a href="{{ route('category.index') }}" class="whitespace-nowrap">Kelola Rumpun</a></li>
-                    <li class="list-disc text-slate-700"><a class="whitespace-nowrap">Kelola Undang-Undang</a></li>
+                    <li class="list-disc text-slate-700"><a href="{{ route('archive.index') }}" class="whitespace-nowrap">Kelola Undang-Undang</a></li>
                 </ul>
             </div>
         </div>

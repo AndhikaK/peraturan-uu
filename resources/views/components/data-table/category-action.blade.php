@@ -25,7 +25,6 @@
             </label>
         </div>
         <div class="text-left py-5">Yakin untuk menghapus rumpun '{{ $row['nama_kategori'] }}'</div>
-        </div>
         <div class="py-5 flex justify-end gap-3 border-t border-t-slate-300">
             <label for="smallMenuModal{{ $row['kategori_id'] }}" class="btn-rounded-solid-cyan">
                 Cancel

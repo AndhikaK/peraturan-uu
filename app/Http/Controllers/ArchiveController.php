@@ -31,7 +31,7 @@ class ArchiveController extends Controller
         // GET DATA
         $categories = Category::get();
 
-        return view('pages.archive', [
+        return view('pages.archive.index', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
             'active' => $active,
@@ -129,38 +129,44 @@ class ArchiveController extends Controller
             'category' => 'required'
         ]);
 
-        $uuPasals = [];
-        foreach ($request->all() as $key => $item) {
-            if (str_contains($key, 'pasal')) {
-                $item = str_replace("\r\n", '<br>', $item);
-                $key = str_replace("_", ' ', $key);
-                $uuPasals[$key] = $item;
+        try {
+            // SAVE ARCHIVE FILE PDF
+            $file = $request->file('arsip');
+            $fileName = 'NewArsip-' . time() . '.' . $file->extension();
+
+            $archive = Archive::create([
+                'uu' => $request->uu,
+                'tentang' => $request->tentang,
+                'file_arsip' => $fileName,
+                'id_kategori' => $request->category,
+                'text' => 'empty',
+                'status' => 1,
+            ]);
+            // PROCESS PASAL AYAT
+            $pasalUpload = [];
+            foreach ($request->all() as $key => $item) {
+                if (str_contains($key, 'pasal')) {
+                    $data = [];
+                    $data['id_tbl_uu'] = $archive->id_tbl_uu;
+                    $data['uud_id'] = str_replace("_", ' ', $key);
+                    $data['uud_section'] = 'ayat';
+                    $data['uud_content'] = str_replace("\r\n", '<br>', $item);;
+                    array_push($pasalUpload, $data);
+                }
             }
+            // INSERT PASAL RECORD
+            foreach ($pasalUpload as $item) {
+                $pasalU = Pasal::create(
+                    $item
+                );
+            }
+
+            // SAVE ARCHVE FILE IN FOLDER
+            $file->move(public_path('assets/pdf'), $fileName);
+        } catch (Exception $e) {
+            return redirect(route('archive.index'))->with('failed', 'Something wrong!');
         }
-        // dd($request->all());
-
-        // try {
-        // SAVE ARCHIVE FILE PDF
-        $file = $request->file('arsip');
-
-        $fileName = 'NewArsip-' . time() . '.' . $file->extension();
-
-        $archive = Archive::create([
-            'uu' => $request->uu,
-            'tentang' => $request->tentang,
-            'file_arsip' => $fileName,
-            'id_kategori' => $request->category,
-            'text' => 'empty',
-            'status' => 1,
-        ]);
-
-        dd($archive);
-
-        $file->move(public_path('assets/hitung'), $fileName);
-        // } catch (Exception $e) {
-        // return redirect(route('archive.create'))->with('failed', 'Something wrong!');
-        // }
-        // dd($request->all());
+        return redirect(route('archive.index'))->with('success', 'Data Undang-Undang berhasil disimpan!');
     }
 
     public function createFile()
@@ -187,10 +193,6 @@ class ArchiveController extends Controller
             'navs' => $this->NavigationList(),
             'categories' => $categories,
         ]);
-    }
-
-    public function createFileConfirmation($data)
-    {
     }
 
     public function fileStore(Request $request)
@@ -333,8 +335,6 @@ class ArchiveController extends Controller
             $i++;
         }
 
-        // dd($pasalAyat);
-
         // PAGE SETUP
         $pageTitle = 'Konfirmasi Arsip';
         $active = 'Arsip';
@@ -360,5 +360,130 @@ class ArchiveController extends Controller
             'categories' => $categories,
             'result' => $pasalAyat,
         ]);
+    }
+
+    public function edit($id)
+    {
+        // PAGE SETUP
+        $pageTitle = 'Arsip';
+        $active = 'Arsip';
+        $breadCrumbs = [
+            'bx-icon' => 'bx bx-notepad',
+            'list' => [
+                ['title' => 'Arsip', 'url' => route('archive.index')],
+            ]
+        ];
+        $categories = Category::get();
+        $archive = Archive::with(['category'])->find($id);
+        $pasals = Pasal::where('id_tbl_uu', $id)
+            ->where(function ($query) {
+                $query->where('uud_section', 'pasal')
+                    ->orWhere('uud_section', 'ayat');
+            })
+            ->orderBy('id')->get();
+
+        $result = [];
+        $tempPasal = '';
+        foreach ($pasals as $pasal) {
+            $arrPasal = explode(' ', $pasal->uud_id);
+            $pasalTitle = count($arrPasal) <= 1 ? $pasal->uud_id : $arrPasal[0];
+            $pasalTitle = str_replace('~', ' ', $pasalTitle);
+            $noPasal = explode(' ', $pasalTitle);
+            $noPasal = count($noPasal) > 1 ? $noPasal[1] : $pasalTitle;
+
+            if ($noPasal == $tempPasal) {
+                $iPasal = count($result) - 1;
+                array_push($result[$iPasal]['content'], $pasal->uud_content);
+            } else {
+                $data = [];
+                $data['title'] = $pasalTitle;
+                $data['content'] = [];
+                $pasal->uud_content = str_replace('<br>', "\r\n", $pasal->uud_content);
+                array_push($data['content'], $pasal->uud_content);
+                array_push($result, $data);
+            }
+            $tempPasal = $noPasal;
+        }
+
+
+        return view('pages.archive.edit', [
+            'user' => Auth::user(),
+            'pageTitle' => $pageTitle,
+            'active' => $active,
+            'breadCrumbs' => $breadCrumbs,
+            'navs' => $this->NavigationList(),
+            'archive' => $archive,
+            'result' => $result,
+            'categories' => $categories,
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // VALIDATE REQUEST INPUT
+        $request->validate([
+            'uu' => 'required',
+            'tentang' => 'required',
+            'category' => 'required'
+        ]);
+
+        try {
+            // SAVE ARCHIVE FILE PDF
+            $dataToUpdate = [
+                'uu' => $request->uu,
+                'tentang' => $request->tentang,
+                'id_kategori' => $request->category,
+                'text' => 'empty',
+                'status' => 1,
+            ];
+            $fileName = '';
+            // SAVE ARCHVE FILE IN FOLDER
+            if ($request->arsip) {
+                $file = $request->file('arsip');
+                $fileName = 'NewArsip-' . time() . '.' . $file->extension();
+                $file->move(public_path('assets/pdf'), $fileName);
+                $dataToUpdate['file_arsip'] = $fileName;
+            }
+
+            $archive = Archive::find($id)
+                ->update(
+                    $dataToUpdate
+                );
+
+            Pasal::where('id_tbl_uu', $id)->delete();
+            // PROCESS PASAL AYAT
+            $pasalUpload = [];
+            foreach ($request->all() as $key => $item) {
+                if (str_contains($key, 'pasal')) {
+                    $data = [];
+                    $data['id_tbl_uu'] = $id;
+                    $data['uud_id'] = str_replace("_", ' ', $key);
+                    $data['uud_section'] = 'ayat';
+                    $data['uud_content'] = str_replace("\r\n", '<br>', $item);;
+                    array_push($pasalUpload, $data);
+                }
+            }
+            // INSERT PASAL RECORD
+            foreach ($pasalUpload as $item) {
+                $pasalU = Pasal::create(
+                    $item
+                );
+            }
+        } catch (Exception $e) {
+            return redirect(route('archive.show', $id))->with('failed', 'Something wrong!');
+        }
+        return redirect(route('archive.show', $id))->with('success', 'Data Undang-Undang berhasil diperbarui!');
+    }
+
+    public function destroy($id)
+    {
+        try {
+            Archive::find($id)->delete();
+            Pasal::where('id_tbl_uu', $id)->delete();
+        } catch (Exception $e) {
+            return redirect(route('archive.index'))->with('failed', 'Something wrong!');
+        }
+
+        return redirect(route('archive.index'))->with('success', 'Arsip berhasil dihapus!');
     }
 }

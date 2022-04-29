@@ -48,10 +48,14 @@
                 @auth
                     <div class="p-5 py-2 flex justify-end gap-2 border-b-2 border-b-slate-200">
                         <a href="{{ route('archive.index') }}">
-                            <button class="py-1 px-2 rounded-md btn-rounded-solid-cyan"><i class='bx bx-arrow-back'></i></button>
+                            <button class="py-1 px-2 rounded-md btn-rounded-solid-cyan text-sm"><i class='bx bx-arrow-back'></i></button>
                         </a>
-                        <button class="py-1 px-4 rounded-md btn-rounded-solid-cyan">Edit</button>
-                        <button class="py-1 px-4 rounded-md btn-rounded-solid-cyan">Hapus</button>
+                        <a href="{{ route('archive.edit', $archive->id_tbl_uu) }}">
+                            <button class="py-1 px-4 rounded-md btn-rounded-solid-cyan text-sm">Edit</button>
+                        </a>
+                        <label for="confirmArchiveDeleteModal" class="py-1 px-4 rounded-md btn-rounded-solid-cyan text-sm">
+                            Hapus
+                        </label>
                     </div>
                 @endauth
                 <div class="p-5">
@@ -83,7 +87,8 @@
                             <div class="p-3 border-b border-l border-slate-300">
                                 <div class="font-bold capitalize">{{ str_replace('~', ' ', $pasal->uud_id) }}</div>
                                 <div>
-                                    <div>{{ $pasal->uud_content }}</div>
+                                    <?php $pasal->uud_content = str_replace('<br>', "\r\n", $pasal->uud_content); ?>
+                                    <div class="whitespace-pre-wrap">{{ $pasal->uud_content }}</div>
                                 </div>
                             </div>
                         </div>
@@ -99,4 +104,31 @@
             </div>
         </div>
     </div>
+
+    <input type="checkbox" id="confirmArchiveDeleteModal" class="modal-toggle">
+    <label for="confirmArchiveDeleteModal" class="modal cursor-pointer">
+        <label class="p-5 bg-white rounded-md modal-box relative">
+            <div class="flex justify-between">
+                <h2 class="text-lg w-10/12 font-bold">Menu</h2>
+                <label for="confirmArchiveDeleteModal" class="rounded-full text-red-500 cursor-pointer">
+                    <i class='bx bx-x text-3xl'></i>
+                </label>
+            </div>
+            <div class="flex flex-col items-start mb-5">
+                Yakin untuk menghapus arsip "{{ $archive->uu }}"?
+            </div>
+            <div class="py-5 flex justify-end gap-3 border-t border-t-slate-300">
+                <label for="confirmArchiveDeleteModal" class="btn-rounded-solid-cyan">
+                    Cancel
+                </label>
+                <form action="{{ route('archive.destroy', $archive->id_tbl_uu) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn-rounded-outline-red">
+                        Hapus
+                    </button>
+                </form>
+            </div>
+        </label>
+    </label>
 @endsection

@@ -12,8 +12,7 @@ class Pasal extends Model
     protected $table = 'uu_pasal_html';
     protected $primaryKey = 'id';
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'id_kategori');
-    }
+    protected $guarded = ['id'];
+    const UPDATED_AT = null;
+    const CREATED_AT = null;
 }
