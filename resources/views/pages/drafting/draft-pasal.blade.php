@@ -14,9 +14,43 @@
     </div>
 </div>
 
+<label for="selectedPasalModal" class="sticky bottom-5 left-5 flex justify-start mt-5">
+    <div id="checked-counter-container" class="hidden backdrop-blur-sm h-11 w-11 text-center align-middle border border-slate-300 bg-white rounded-md relative cursor-pointer hover:shadow-lg">
+        <div class="absolute h-4 w-4 text-center -top-1 -right-2 rounded-full bg-sky-600 text-sky-600 text-xs font-bold animate-ping">
+            0
+        </div>
+        <div id="checked-counter" class="absolute h-4 w-4 text-center -top-1 -right-2 rounded-full bg-sky-600 text-white text-xs font-bold">
+            0
+        </div>
+        <i class='bx bxs-select-multiple text-slate-400 text-3xl'></i>
+    </div>
+</label>
+
+<!-- Put this part before </body> tag -->
+<input type="checkbox" id="selectedPasalModal" class="modal-toggle" />
+<div class="modal modal-bottom sm:modal-middle">
+    <div class="modal-box bg-white text-slate-900">
+        <div class="grid grid-cols-[1fr_auto]">
+            <h3 class="font-bold text-lg">Pasal Terpilih</h3>
+            <label for="selectedPasalModal" class="p-0 m-0 text-sky-600 rounded-full w-5 h-5 hover:bg-sky-600 hover:text-white text-center align-middle">
+                <i class='bx bx-x'></i>
+            </label>
+        </div>
+        <div class="pt-5 grid gap-5">
+            <div id="selectedPasalContainer" class="font-bold">
+            </div>
+        </div>
+        <div class="pt-3 flex justify-end border-t border-t-slate-200 ">
+            <button class="btn-rounded-solid-cyan">PDF</button>
+        </div>
+    </div>
+</div>
+
 @section('datatable')
     <script>
         // / DISPLAY THE TABLE
+        let totalData = []
+
         $(document).ready(function() {
             // APPLY FILTER
             let theme = $("#theme");
@@ -48,6 +82,8 @@
             function renderData(data) {
                 let pasalContainer = $("#pasal-result");
                 let paginatedData = paginate(data, 10, 1);
+                totalData = paginatedData
+                console.log(totalData)
 
                 if (paginatedData.length > 0) {
                     pasalContainer.html('')
@@ -117,7 +153,6 @@
             }
 
             countSelected()
-            console.log(selected)
         }
 
         function countSelected() {
@@ -127,7 +162,29 @@
                     selected.push($(this).val())
                 }
             })
+            $('#checked-counter').html(selected.length)
+            if (selected.length > 0) {
+                $('#checked-counter-container').show()
+            } else {
+                $('#checked-counter-contianer').hide()
+            }
 
+            let cont = $('#selectedPasalContainer')
+            cont.html('')
+            console.log(selected, totalData)
+            totalData.forEach(function(element) {
+                // console.log(selected.includes(element.id))
+                if (selected.includes(String(element.id))) {
+                    let el =
+                        "<div class='font-bold mt-3'>" +
+                        "<div>" +
+                        `${element.uu} - <span class='text-sky-600'>${element.tentang}</span>` +
+                        "</div>" +
+                        `<div class='font-normal text-sm text-slate-500'>${element.uud_id}</div>` +
+                        "</div>";
+                    cont.append(el)
+                }
+            })
         }
     </script>
 @endsection
