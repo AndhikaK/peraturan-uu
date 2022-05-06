@@ -16,7 +16,7 @@
                         <label class="block text-gray-700 text-sm font-medium mb-2" for="username">
                             Masukkan Tema
                         </label>
-                        <textarea name="theme" id="theme" rows="10" class="block appearance-none w-full input-rounded-cyan text-sm shadow"></textarea>
+                        <textarea name="theme" id="theme" rows="10" class="block appearance-none w-full input-rounded-cyan text-sm shadow" placeholder="Masukkan tema drafting..."></textarea>
                     </div>
                     <button id="applyFilter" class="w-full btn-rounded-solid-cyan" type="button">
                         Cari
@@ -37,7 +37,7 @@
             @if (!$mode || $mode != 'pasal')
                 @include('pages.draft-full')
             @else
-                @include('pages.draft-pasal')
+                @include('pages.drafting.draft-pasal')
             @endif
         </div>
     </div>

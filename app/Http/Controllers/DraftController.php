@@ -45,7 +45,6 @@ class DraftController extends Controller
 
     public function calcPasalSimilarity(Request $request)
     {
-        dd($request);
         $wordvecPasal = Http::post('localhost:5000/wordvecPasal', [
             'kalimat' => $request->theme,
             'kategori' => '',
