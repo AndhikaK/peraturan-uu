@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Archive;
 use App\Models\Category;
+use App\Models\Pasal;
 use App\Models\StemmingTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,7 @@ use Sastrawi\Stemmer\StemmerFactory;
 use Smalot\PdfParser\Parser;
 use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\Facades\DataTables;
+use MPDF;
 
 class DraftController extends Controller
 {
@@ -258,5 +260,18 @@ class DraftController extends Controller
         } else {
             return 'File tidak ditemukan';
         }
+    }
+
+    public function exportDraft(Request $request)
+    {
+        // GET DATA FOR EXPORT
+        $pasals = explode(',', $request->pasals);
+        $pasalResults = Pasal::with(['uu'])->findMany($pasals);
+
+        $pdf = MPDF::loadView('pages.drafting.export', [
+            'data' => $pasalResults,
+        ]);
+
+        return $pdf->stream('OMNILAW_DRAFT_' . date('ymdhi'));
     }
 }

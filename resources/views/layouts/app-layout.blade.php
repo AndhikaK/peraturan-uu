@@ -32,7 +32,7 @@
 <body class="min-h-screen text-slate-700 bg-gradient-to-tr from-slate-100 to-slate-50">
 
     <div class="grid grid-rows-[auto_1fr_auto] min-h-screen">
-        <div id="loader" class="absolute hidden w-screen h-screen">
+        <div id="loader" class="fixed hidden w-screen h-screen">
             <div class="grid place-items-center h-full ">
                 <div class="p-14 rounded-2xl text-white flex flex-col justify-center gap-4 bg-slate-800/60 backdrop-blur-sm">
                     <div class="text-center">

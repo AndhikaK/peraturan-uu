@@ -1,7 +1,7 @@
 <div class="w-full mt-5">
     <div id="pasal-result" class="grid gap-5">
-        <div class="text-center font-bold text-xl p-5 rounded-lg max-h-screen">
-            <img src="{{ asset('assets/img/creative.svg') }}" class="h-2/6 mx-auto mb-5" alt="">
+        <div class="text-center font-bold text-xl p-5 rounded-lg">
+            <img src="{{ asset('assets/img/creative-team.png') }}" class="h-2/6 mx-auto mb-5" alt="">
             Masukkan tema untuk drafting...
         </div>
     </div>
@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="pt-3 flex justify-end border-t border-t-slate-200 ">
-            <button class="btn-rounded-solid-cyan">PDF</button>
+            <button id="draftExportPDF" class="btn-rounded-solid-cyan">PDF</ id="draftExportPDF">
         </div>
     </div>
 </div>
@@ -186,5 +186,13 @@
                 }
             })
         }
+
+        $('#draftExportPDF').click(function() {
+            let url = "{{ route('draft.export-pasal-pdf') }}"
+            let param = selected.toString()
+            let paramUrl = `${url}?pasals=${param}`
+            console.log(paramUrl)
+            window.location.href = paramUrl
+        })
     </script>
 @endsection

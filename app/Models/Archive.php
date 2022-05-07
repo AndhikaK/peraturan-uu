@@ -21,4 +21,9 @@ class Archive extends Model
     {
         return $this->belongsTo(Category::class, 'id_kategori');
     }
+
+    public function pasal()
+    {
+        return $this->hasMany(Pasal::class, 'id_tbl_uu', 'id_tbl_uu');
+    }
 }

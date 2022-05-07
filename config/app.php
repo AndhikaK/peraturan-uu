@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         // YAJRA DATATABLE
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
 
     ],
 
@@ -231,7 +232,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'MPDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class,
     ],
 
 ];

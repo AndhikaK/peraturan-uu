@@ -51,4 +51,8 @@ Route::get('archive_file_store_confirmation', [ArchiveController::class, 'create
 Route::get('harmonisasi-result', [HarmonisasiController::class, 'result'])->name('harmonisasi.result');
 Route::get('harmonisasi-result-data', [HarmonisasiController::class, 'resultData'])->name('harmonisasi.result-data');
 
+
+// EXPORT DATA
+Route::get('pasal_export', [DraftController::class, 'exportDraft'])->name('draft.export-pasal-pdf');
+
 require __DIR__ . '/auth.php';
