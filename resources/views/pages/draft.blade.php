@@ -26,19 +26,21 @@
         </div>
         {{-- DRAFT RESULT --}}
         <div class="self-start">
-            <div class="flex justify-end gap-3">
+            {{-- <div class="flex justify-end gap-3">
                 <a href="{{ route('draft.index') . '?mode=full' }}">
                     <button class="{{ !$mode || $mode != 'pasal' ? 'btn-solid-cyan' : 'btn-cyan' }}">Penuh</button>
                 </a>
                 <a href="{{ route('draft.index') . '?mode=pasal' }}">
                     <button class="{{ $mode == 'pasal' ? 'btn-solid-cyan' : 'btn-cyan' }}">Per pasal</button>
                 </a>
-            </div>
-            @if (!$mode || $mode != 'pasal')
+            </div> --}}
+            {{-- @if (!$mode || $mode != 'pasal')
                 @include('pages.draft-full')
             @else
                 @include('pages.drafting.draft-pasal')
-            @endif
+            @endif --}}
+            @include('pages.drafting.draft-pasal')
+
         </div>
     </div>
 @endsection

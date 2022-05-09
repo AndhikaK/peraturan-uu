@@ -197,18 +197,32 @@ class ArchiveController extends Controller
 
     public function fileStore(Request $request)
     {
-        // dd('this is soter');
-        $file = $request->archive;
-
         $request->validate([
-            'archive' => 'required|mimes:pdf',
+            'file' => 'required|mimes:pdf',
         ]);
+        $image = $request->file('file');
 
-        // use of pdf parser to read content from pdf 
-        $fileName = $file->getClientOriginalName();
+        $imageName = 'temp-archive' . '.' . $image->extension();
+        $image->move(public_path('assets/hitung'), $imageName);
 
+        return response()->json(['success' => $imageName]);
+    }
+
+    public function fileProcess(Request $request)
+    {
+        // dd(asset('assets/hitung/temp-archive.pdf'));
+        // dd('this is soter');
+        // $file = $request->archive;
+
+        // $request->validate([
+        //     'archive' => 'required|mimes:pdf',
+        // ]);
+
+        // // use of pdf parser to read content from pdf 
+        // $fileName = $file->getClientOriginalName();
+        $pdfPath = public_path() . '\assets\hitung\temp-archive.pdf';
         $pdfParser = new Parser();
-        $pdf = $pdfParser->parseFile($file->path());
+        $pdf = $pdfParser->parseFile($pdfPath);
         // get the pdf text
         $content = $pdf->getText();
         // make all char Lowercase
@@ -404,7 +418,6 @@ class ArchiveController extends Controller
             }
             $tempPasal = $noPasal;
         }
-
 
         return view('pages.archive.edit', [
             'user' => Auth::user(),

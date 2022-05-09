@@ -15,7 +15,7 @@ class IndexController extends Controller
         $pageTitle = 'Beranda';
         $active = 'Beranda';
 
-        return view('pages.index', [
+        return view('pages.dashboard.index', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
             'active' => $active,

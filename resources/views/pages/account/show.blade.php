@@ -28,7 +28,7 @@
                                 <label for="password" class="text-sm">Role</label>
                                 <select name="role" class="p-1 input-rounded-cyan border text-sm border-cyan-600/40">
                                     @foreach ($roles as $role)
-                                        <option value="{{ $role->id }}" {{ old('role') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
+                                        <option value="{{ $role }}" {{ old('role') == $role ? 'selected' : '' }}>{{ $role }}</option>
                                     @endforeach
                                 </select>
                             </div>

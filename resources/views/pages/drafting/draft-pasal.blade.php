@@ -14,17 +14,21 @@
     </div>
 </div>
 
-<label for="selectedPasalModal" class="sticky bottom-5 left-5 flex justify-start mt-5">
-    <div id="checked-counter-container" class="hidden backdrop-blur-sm h-11 w-11 text-center align-middle border border-slate-300 bg-white rounded-md relative cursor-pointer hover:shadow-lg">
-        <div class="absolute h-4 w-4 text-center -top-1 -right-2 rounded-full bg-sky-600 text-sky-600 text-xs font-bold animate-ping">
-            0
+<div class="sticky bottom-5 left-5 flex justify-start mt-5">
+
+    <label for="selectedPasalModal">
+        <div id="checked-counter-container" class="hidden backdrop-blur-sm h-11 w-11 text-center align-middle border border-slate-300 bg-white rounded-md relative cursor-pointer hover:shadow-lg">
+            <div class="absolute h-4 w-4 text-center -top-1 -right-2 rounded-full bg-sky-600 text-sky-600 text-xs font-bold animate-ping">
+                0
+            </div>
+            <div id="checked-counter" class="absolute h-4 w-4 text-center -top-1 -right-2 rounded-full bg-sky-600 text-white text-xs font-bold">
+                0
+            </div>
+            <i class='bx bxs-select-multiple text-slate-400 text-3xl'></i>
         </div>
-        <div id="checked-counter" class="absolute h-4 w-4 text-center -top-1 -right-2 rounded-full bg-sky-600 text-white text-xs font-bold">
-            0
-        </div>
-        <i class='bx bxs-select-multiple text-slate-400 text-3xl'></i>
-    </div>
-</label>
+    </label>
+</div>
+
 
 <!-- Put this part before </body> tag -->
 <input type="checkbox" id="selectedPasalModal" class="modal-toggle" />
@@ -108,9 +112,9 @@
                             "</div>" +
                             "<div class='pt-3 mt-2 flex justify-between items-center border-t border-t-slate-100'>" +
                             "<div class='font-bold text-cyan-600'>" +
-                            `${element.presentase}` +
+                            `${element.presentase}%` +
                             "</div>" +
-                            "<div>" +
+                            "<div class='flex items-center gap-3'>" +
                             "<div id='ck-button' class='rounded-full border px-3 hover:bg-slate-300 hover:text-slate-800'>" +
                             "<label>" +
                             `<input class='checkboxes ' type='checkbox' value='${element.id}' onchange='toggleChecked(this)'><span>Check</span>` +

@@ -25,9 +25,9 @@
                             </div>
                             <div class="grid">
                                 <label for="password" class="text-sm">Role</label>
-                                <select name="role" class="p-1 input-rounded-cyan border text-sm border-cyan-600/40">
+                                <select name="role" class="p-1 input-rounded-cyan border text-sm border-cyan-600/40 capitalize">
                                     @foreach ($roles as $role)
-                                        <option value="{{ $role->id }}" {{ old('role') == $role->id ? 'selected' : '' }}>{{ $role->name }}</option>
+                                        <option value="{{ $role }}" {{ old('role') == $role ? 'selected' : '' }}>{{ $role }}</option>
                                     @endforeach
                                 </select>
                             </div>

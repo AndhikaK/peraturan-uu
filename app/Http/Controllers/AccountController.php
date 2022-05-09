@@ -7,7 +7,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 class AccountController extends Controller
@@ -38,16 +37,13 @@ class AccountController extends Controller
 
     public function accountData()
     {
-        $data = User::with(['roles'])->select(['id', 'name', 'email',]);
+        $data = User::select(['id', 'name', 'email', 'role']);
 
         return DataTables::of($data)
-            ->addColumn('role', function ($row) {
-                return view('components.data-table.account-role', compact(['row']));
-            })
             ->addColumn('account-actions', function ($row) {
                 return view('components.data-table.account-action', compact(['row']));
             })
-            ->rawColumns(['account-actions', 'role'])
+            ->rawColumns(['account-actions',])
             ->make(true);
     }
 
@@ -63,8 +59,11 @@ class AccountController extends Controller
             ]
         ];
 
-        // REQUIRED DATA
-        $roles = Role::get();
+        $roles = [
+            'admin',
+            'verifikator',
+            'user'
+        ];
 
         return view('pages.account.create', [
             'user' => Auth::user(),
@@ -82,18 +81,18 @@ class AccountController extends Controller
             'name' => 'required',
             'email' => 'required|email:rfc,dns',
             'password' => 'required|min:6',
+            'role' => 'required'
         ]);
 
-        $role = Role::find($request->role);
         $hashedPassword = Hash::make($request->password);
 
         $newUser = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $hashedPassword,
+            'role' => $request->role,
         ]);
 
-        $newUser->assignRole($role);
 
         return redirect(route('account.index'))->with('success', 'Pengguna baru berhasil ditambahkan!');
     }
@@ -111,8 +110,12 @@ class AccountController extends Controller
         ];
 
         // REQUIRED DATA
-        $roles = Role::get();
         $account = User::find($id);
+        $roles = [
+            'admin',
+            'verifikator',
+            'user',
+        ];
 
         return view('pages.account.show', [
             'user' => Auth::user(),
@@ -120,8 +123,8 @@ class AccountController extends Controller
             'active' => $active,
             'breadCrumbs' => $breadCrumbs,
             'navs' => $this->NavigationList(),
-            'roles' => $roles,
             'account' => $account,
+            'roles' => $roles,
         ]);
     }
 
@@ -131,10 +134,10 @@ class AccountController extends Controller
             'name' => 'required',
             'email' => 'required|email:rfc,dns',
             'password' => 'required|min:6',
+            'role' => 'required',
         ]);
 
         try {
-            $role = Role::find($request->role);
             $hashedPassword = Hash::make($request->password);
 
             $account = User::find($id);
@@ -143,9 +146,8 @@ class AccountController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'password' => $hashedPassword,
+                    'role' => $request->role,
                 ]);
-
-            $account->syncRoles($role);
         } catch (Exception $e) {
             return redirect(route('account.index'))->with('failed', 'Something wrong!');
         }

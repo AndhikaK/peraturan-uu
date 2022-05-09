@@ -46,6 +46,7 @@ Route::get('draft-pasal', [DraftController::class, 'calcPasalSimilarity'])->name
 Route::get('archive_file_create', [ArchiveController::class, 'createFile'])->name('archive-file.create');
 
 Route::post('archive_file_store', [ArchiveController::class, 'fileStore'])->name('archive-file.store');
+Route::get('archive_file_process', [ArchiveController::class, 'fileProcess'])->name('archive-file.process');
 Route::get('archive_file_store_confirmation', [ArchiveController::class, 'createFileConfirmation'])->name('archive-file.store-confirmation');
 
 Route::get('harmonisasi-result', [HarmonisasiController::class, 'result'])->name('harmonisasi.result');

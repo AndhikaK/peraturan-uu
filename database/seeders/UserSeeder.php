@@ -21,12 +21,12 @@ class UserSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // create permissions
-        Permission::create(['name' => 'master']);
+        // // create permissions
+        // Permission::create(['name' => 'master']);
 
-        // create roles and assign existing permissions
-        $role1 = Role::create(['name' => 'Admin']);
-        $role1->givePermissionTo('master');
+        // // create roles and assign existing permissions
+        // $role1 = Role::create(['name' => 'Admin']);
+        // $role1->givePermissionTo('master');
 
         // create demo users
         $user = User::create([
@@ -34,6 +34,6 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('123456'),
         ]);
-        $user->assignRole($role1);
+        // $user->assignRole($role1);
     }
 }

@@ -24,7 +24,9 @@
                 <i class='bx bx-x text-3xl'></i>
             </label>
         </div>
-        <div>Yakin untuk menghapus akun '{{ $row['name'] }}'</div>
+        <div class="text-left py-5">
+            Yakin untuk menghapus akun '<b>{{ $row['name'] }}</b>'
+        </div>
         </div>
         <div class="py-5 flex gap-3 border-t border-t-slate-300">
             <label for="smallMenuModal{{ $row['id'] }}" class="btn-rounded-solid-cyan">

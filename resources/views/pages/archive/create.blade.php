@@ -2,15 +2,10 @@
 
 @section('content')
     <div class="p-5 lg:p-14 lg:py-7">
-
-        <div class="p-3 bg-white rounded-md border border-slate-400 border-t-2 border-t-rose-700">
-            <div class="flex justify-end w-full">
-                <a href="{{ route('archive-file.create') }}">
-                    <button class="bg-sky-800 p-2 text-white font-medium rounded">
-                        File upload
-                    </button>
-                </a>
-            </div>
+        <div class="py-5 flex justify-end">
+            <a href="{{ route('archive-file.create') }}" class="btn-rounded-solid-cyan">
+                File Upload
+            </a>
         </div>
 
         <div id='container'>

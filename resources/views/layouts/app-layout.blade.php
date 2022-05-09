@@ -23,9 +23,11 @@
     <link rel="stylesheet" href="{{ asset('css/button-like-checkbox.css') }}">
     {{-- DATATABLE CSS --}}
     <link rel="stylesheet" href="{{ asset('css/dataTable.css') }}">
+    {{-- FONT CDN --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Poppins&family=Rubik:wght@700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 </head>
 
