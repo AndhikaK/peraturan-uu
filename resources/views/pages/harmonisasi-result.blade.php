@@ -7,13 +7,8 @@
             <div class="bg-white rounded shadow-lg">
                 <div class="p-5 py-3 mb-3 flex justify-between items-center border-b-2 border-b-slate-200 font-bold">
                     <div>
-                        Arsip Undang-Undang
+                        Hasil Harmonisasi Undang-Undang
                     </div>
-                    @auth
-                        <button class="btn-solid-cyan">
-                            Arsip Baru
-                        </button>
-                    @endauth
                 </div>
                 <div class="p-5 overflow-auto">
                     <table class="mt-3 overflow-auto" id="myTable" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">

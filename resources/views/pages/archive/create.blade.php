@@ -19,7 +19,14 @@
                             <option value="{{ $category->kategori_id }}">{{ $category->nama_kategori }}</option>
                         @endforeach
                     </select>
-                    <input type="file" name="arsip" required>
+                    <input type="hidden" name="fromFileUpload" value="{{ isset($fromFileUpload) ? 'true' : 'false' }}">
+                    @isset($fromFileUpload)
+                        <a href="{{ asset('assets/hitung/temp-archive.pdf') }}" target="blank" class="text-xl text-sky-600">
+                            <i class='bx bxs-file-pdf'></i> Uploaded File
+                        </a>
+                    @else
+                        <input type="file" name="arsip" required>
+                    @endisset
                 </div>
 
                 <ul id='sortable-input' class="grid gap-2">

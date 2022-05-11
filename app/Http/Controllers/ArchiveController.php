@@ -8,13 +8,16 @@ use App\Models\Pasal;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Stmt\Foreach_;
 use Smalot\PdfParser\Parser;
 use Yajra\DataTables\Facades\DataTables;
+use File;
 
 class ArchiveController extends Controller
 {
     use NavigationList;
+    use PrepareArchive;
 
     public function index()
     {
@@ -125,14 +128,24 @@ class ArchiveController extends Controller
         $request->validate([
             'uu' => 'required',
             'tentang' => 'required',
-            'arsip' => 'required',
             'category' => 'required'
         ]);
 
         try {
-            // SAVE ARCHIVE FILE PDF
-            $file = $request->file('arsip');
-            $fileName = 'NewArsip-' . time() . '.' . $file->extension();
+            $fileName = '';
+            if ($request->fromFileUpload == 'false') {
+                // SAVE ARCHIVE FILE PDF
+                $file = $request->file('arsip');
+                $fileName = 'NewArsip-' . time() . '.' . $file->extension();
+            } else {
+                // COPY TEMP FILE TO A NEW FOLDER
+                $oldFile = public_path() . '\assets\hitung\temp-archive.pdf';
+                $newFile = 'NewArsip-' . time() . '.pdf';
+                if (!copy($oldFile, public_path('\assets\pdf\\' . $newFile))) {
+                    return redirect(route('archive.index'))->with('failed', 'Copy file failed!');
+                }
+                $fileName = $newFile;
+            }
 
             $archive = Archive::create([
                 'uu' => $request->uu,
@@ -142,6 +155,8 @@ class ArchiveController extends Controller
                 'text' => 'empty',
                 'status' => 1,
             ]);
+
+            $this->simpan($archive);
             // PROCESS PASAL AYAT
             $pasalUpload = [];
             foreach ($request->all() as $key => $item) {
@@ -164,6 +179,7 @@ class ArchiveController extends Controller
             // SAVE ARCHVE FILE IN FOLDER
             $file->move(public_path('assets/pdf'), $fileName);
         } catch (Exception $e) {
+            dd($e);
             return redirect(route('archive.index'))->with('failed', 'Something wrong!');
         }
         return redirect(route('archive.index'))->with('success', 'Data Undang-Undang berhasil disimpan!');
@@ -218,7 +234,7 @@ class ArchiveController extends Controller
         //     'archive' => 'required|mimes:pdf',
         // ]);
 
-        // // use of pdf parser to read content from pdf 
+        // use of pdf parser to read content from pdf 
         // $fileName = $file->getClientOriginalName();
         $pdfPath = public_path() . '\assets\hitung\temp-archive.pdf';
         $pdfParser = new Parser();
@@ -373,6 +389,7 @@ class ArchiveController extends Controller
             'navs' => $this->NavigationList(),
             'categories' => $categories,
             'result' => $pasalAyat,
+            'fromFileUpload' => true,
         ]);
     }
 
