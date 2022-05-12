@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Archive;
 use App\Models\Category;
 use App\Models\Pasal;
+use App\Models\PreprocessingPasal;
+use App\Models\Stemming;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -131,57 +133,57 @@ class ArchiveController extends Controller
             'category' => 'required'
         ]);
 
-        try {
-            $fileName = '';
-            if ($request->fromFileUpload == 'false') {
-                // SAVE ARCHIVE FILE PDF
-                $file = $request->file('arsip');
-                $fileName = 'NewArsip-' . time() . '.' . $file->extension();
-            } else {
-                // COPY TEMP FILE TO A NEW FOLDER
-                $oldFile = public_path() . '\assets\hitung\temp-archive.pdf';
-                $newFile = 'NewArsip-' . time() . '.pdf';
-                if (!copy($oldFile, public_path('\assets\pdf\\' . $newFile))) {
-                    return redirect(route('archive.index'))->with('failed', 'Copy file failed!');
-                }
-                $fileName = $newFile;
+        // try {
+        $fileName = '';
+        if ($request->fromFileUpload == 'false') {
+            // SAVE ARCHIVE FILE PDF
+            $file = $request->file('arsip');
+            $fileName = 'NewArsip-' . time() . '.' . $file->extension();
+        } else {
+            // COPY TEMP FILE TO A NEW FOLDER
+            $oldFile = public_path() . '\assets\hitung\temp-archive.pdf';
+            $newFile = 'NewArsip-' . time() . '.pdf';
+            if (!copy($oldFile, public_path('\assets\pdf\\' . $newFile))) {
+                return redirect(route('archive.index'))->with('failed', 'Copy file failed!');
             }
-
-            $archive = Archive::create([
-                'uu' => $request->uu,
-                'tentang' => $request->tentang,
-                'file_arsip' => $fileName,
-                'id_kategori' => $request->category,
-                'text' => 'empty',
-                'status' => 1,
-            ]);
-
-            $this->simpan($archive);
-            // PROCESS PASAL AYAT
-            $pasalUpload = [];
-            foreach ($request->all() as $key => $item) {
-                if (str_contains($key, 'pasal')) {
-                    $data = [];
-                    $data['id_tbl_uu'] = $archive->id_tbl_uu;
-                    $data['uud_id'] = str_replace("_", ' ', $key);
-                    $data['uud_section'] = 'ayat';
-                    $data['uud_content'] = str_replace("\r\n", '<br>', $item);;
-                    array_push($pasalUpload, $data);
-                }
-            }
-            // INSERT PASAL RECORD
-            foreach ($pasalUpload as $item) {
-                $pasalU = Pasal::create(
-                    $item
-                );
-            }
-
-            // SAVE ARCHVE FILE IN FOLDER
-            $file->move(public_path('assets/pdf'), $fileName);
-        } catch (Exception $e) {
-            dd($e);
-            return redirect(route('archive.index'))->with('failed', 'Something wrong!');
+            $fileName = $newFile;
         }
+
+        $archive = Archive::create([
+            'uu' => $request->uu,
+            'tentang' => $request->tentang,
+            'file_arsip' => $fileName,
+            'id_kategori' => $request->category,
+            'text' => 'empty',
+            'status' => 1,
+        ]);
+
+        $this->simpan($archive);
+        // PROCESS PASAL AYAT
+        $pasalUpload = [];
+        foreach ($request->all() as $key => $item) {
+            if (str_contains($key, 'pasal')) {
+                $data = [];
+                $data['id_tbl_uu'] = $archive->id_tbl_uu;
+                $data['uud_id'] = str_replace("_", ' ', $key);
+                $data['uud_section'] = 'ayat';
+                $data['uud_content'] = str_replace("\r\n", '<br>', $item);;
+                array_push($pasalUpload, $data);
+            }
+        }
+        // INSERT PASAL RECORD
+        foreach ($pasalUpload as $item) {
+            $insert = Pasal::create(
+                $item
+            );
+            // PRERPOCESS FOR PASAL THROUGH OMNILAW FLASK APP
+            $this->simpanPasal($insert);
+        }
+
+        // } catch (Exception $e) {
+        //     dd($e);
+        //     return redirect(route('archive.index'))->with('failed', 'Something wrong!');
+        // }
         return redirect(route('archive.index'))->with('success', 'Data Undang-Undang berhasil disimpan!');
     }
 
@@ -463,7 +465,6 @@ class ArchiveController extends Controller
                 'uu' => $request->uu,
                 'tentang' => $request->tentang,
                 'id_kategori' => $request->category,
-                'text' => 'empty',
                 'status' => 1,
             ];
             $fileName = '';
@@ -479,8 +480,17 @@ class ArchiveController extends Controller
                 ->update(
                     $dataToUpdate
                 );
-
-            Pasal::where('id_tbl_uu', $id)->delete();
+            // DELETE EXISTING PASAL BEFORE INSERTING A NEW ONE AGAIN
+            $pasals = Pasal::where('id_tbl_uu', $id);
+            foreach ($pasals as $pasal) {
+                $pasalID = $pasal->id;
+                // $pasal->delete();
+                $prepPasal = PreprocessingPasal::find($pasalID);
+                if ($prepPasal) {
+                    $prepPasal->delete();
+                }
+            }
+            $pasals->delete();
             // PROCESS PASAL AYAT
             $pasalUpload = [];
             foreach ($request->all() as $key => $item) {
@@ -498,6 +508,7 @@ class ArchiveController extends Controller
                 $pasalU = Pasal::create(
                     $item
                 );
+                $this->simpanPasal($pasalU);
             }
         } catch (Exception $e) {
             return redirect(route('archive.show', $id))->with('failed', 'Something wrong!');
@@ -508,8 +519,21 @@ class ArchiveController extends Controller
     public function destroy($id)
     {
         try {
-            Archive::find($id)->delete();
-            Pasal::where('id_tbl_uu', $id)->delete();
+            $archive = Archive::find($id)->delete();
+            $stemming = Stemming::where('id_tbl_uu', $id)->first();
+            if ($stemming) {
+                $stemming->delete();
+            }
+
+            $pasals = Pasal::where('id_tbl_uu', $id)->get();
+            foreach ($pasals as $pasal) {
+                $idPasal = $pasal->id;
+                $pasal->delete();
+                $prepPasal = PreprocessingPasal::find($idPasal);
+                if ($prepPasal) {
+                    $prepPasal->delete();
+                }
+            }
         } catch (Exception $e) {
             return redirect(route('archive.index'))->with('failed', 'Something wrong!');
         }

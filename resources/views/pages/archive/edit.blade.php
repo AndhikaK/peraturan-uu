@@ -16,7 +16,15 @@
                             <option value="{{ $category->kategori_id }}" {{ $archive->id_tbl_uu == $category->kategori_id ? 'selected' : '' }}>{{ $category->nama_kategori }}</option>
                         @endforeach
                     </select>
-                    <input type="file" name="arsip">
+                    <div>
+                        <a href="{{ asset('assets/pdf/') . '/' . $archive->file_arsip }}" target="blank" class="text-lg text-sky-600">
+                            <i class='bx bxs-file-pdf'></i> {{ $archive->uu }}
+                        </a>
+                    </div>
+                    <div>
+                        <div>Arsip Baru</div>
+                        <input type="file" name="arsip">
+                    </div>
                 </div>
                 <ul id='sortable-input' class="grid gap-2">
                     @isset($result)

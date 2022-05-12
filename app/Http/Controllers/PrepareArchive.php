@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Archive;
+use App\Models\PreprocessingPasal;
 use App\Models\Stemming;
 use Illuminate\Support\Facades\Http;
 use Sastrawi\Stemmer\StemmerFactory;
@@ -56,7 +57,6 @@ trait PrepareArchive
         // APPLY PREPROCESSING FROM FLASK APPLICATION
         // DONT FORGET TO CHANGE FILE PATH IN FLASK APP
         $url = 'http://localhost:5000/undang/tambahUU';
-        $headers = array('Content-Type' => 'application/json');
         $prep = array(
             'id_tbl_uu' => $archive->id_tbl_uu,
             'file' => $archive->file_arsip
@@ -127,7 +127,6 @@ trait PrepareArchive
         }
         $stemmerFactory = new StemmerFactory;
         $stemmer  = $stemmerFactory->createStemmer();
-        // dd($tokenizing);
         foreach ($tokenizing as $key => $filter) {
             $kata = json_decode($filter);
             $sentence = implode(" ", $kata);
@@ -138,8 +137,25 @@ trait PrepareArchive
                 "id_tbl_uu" => $dataset->id_tbl_uu
             );
             $insertStemming = Stemming::create($insertStemming);
-            dd($insertStemming);
         }
+    }
+
+    public function simpanPasal($insert)
+    {
+        $id_uu_pasal = $insert->id;
+        $prep = array(
+            'id_uu_pasal' => $id_uu_pasal,
+            'uud_content' => $insert->uud_content,
+        );
+        $url = 'http://localhost:5000/undang/tambahPasal';
+
+        $response = Http::withBody(json_encode($prep), "application/json")->post($url);
+        $result = $response->json();
+
+        $insertPre = PreprocessingPasal::create([
+            'id_uu_pasal' => $id_uu_pasal,
+            'uud_detail' => $result['values'],
+        ]);
     }
 
     function array_stopword()

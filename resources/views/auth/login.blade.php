@@ -19,7 +19,7 @@
                 <div class="pt-5 pb-2 grid gap-3">
                     <div class="grid">
                         <label for="email" class="text-sm">Email</label>
-                        <input type="text" name="email" class="p-1 input-rounded-cyan border text-sm border-cyan-600/40" autofocus>
+                        <input type="text" name="email" class="p-1 input-rounded-cyan border text-sm border-cyan-600/40" value="{{ old('email') }}" autofocus>
                     </div>
                     <div class="grid">
                         <label for="password" class="text-sm">Password</label>
