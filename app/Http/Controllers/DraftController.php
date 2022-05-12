@@ -270,6 +270,8 @@ class DraftController extends Controller
 
         $pdf = MPDF::loadView('pages.drafting.export', [
             'data' => $pasalResults,
+        ], [], [
+            'margin_top' => 25
         ]);
 
         return $pdf->stream('OMNILAW_DRAFT_' . date('ymdhi'));

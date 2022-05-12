@@ -54,7 +54,6 @@ Route::get('harmonisasi-result-data', [HarmonisasiController::class, 'resultData
 Route::get('harmonisasi-result-detail', [HarmonisasiController::class, 'resultDetail'])->name('harmonisasi.result-detail');
 
 
-
 // EXPORT DATA
 Route::get('pasal_export', [DraftController::class, 'exportDraft'])->name('draft.export-pasal-pdf');
 

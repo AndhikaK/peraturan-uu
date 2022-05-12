@@ -20,7 +20,7 @@ class HarmonisasiController extends Controller
         $pageTitle = 'Harmonisasi';
         $active = 'Harmonisasi';
 
-        return view('pages.harmonisasi', [
+        return view('pages.harmonisasi.index', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
             'active' => $active,
@@ -44,7 +44,11 @@ class HarmonisasiController extends Controller
         $pageTitle = 'Hasil Harmonisasi';
         $active = 'Harmonisasi';
 
-        return view('pages.harmonisasi-result', [
+        if (!file_exists(public_path('assets\hitung\pembanding.pdf'))) {
+            return redirect(route('harmonisasi.index'))->with('failed', 'Belum terdapat file pembanding');
+        }
+
+        return view('pages.harmonisasi.result', [
             'user' => Auth::user(),
             'pageTitle' => $pageTitle,
             'active' => $active,
@@ -61,6 +65,9 @@ class HarmonisasiController extends Controller
             ->addColumn('file_arsip', function ($row) {
                 return view('components.data-table.harmonisasi-file', compact(['row']));
             })
+            ->editColumn('presentase', function ($row) {
+                return $row->presentase . '%';
+            })
             ->make(true);
     }
 
@@ -71,10 +78,10 @@ class HarmonisasiController extends Controller
         $active = 'Harmonisasi';
 
         //  GET ARCHIVE AND PEMBANDING
-        $archive = Archive::find($request->archive);
+        $archive = Archive::find($request->id_tbl_uu);
 
         // return back if not parameter is not valid or when there is no archive found
-        if (!$request->archive || !$archive) {
+        if (!$request->id_tbl_uu || !$archive) {
             return redirect(route('harmonisasi.result'))->with('failed', 'Something wrong!');
         }
         // EXTRACT PDF CONTENTS

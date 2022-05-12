@@ -115,7 +115,7 @@
                             `${element.presentase}%` +
                             "</div>" +
                             "<div class='flex items-center gap-3'>" +
-                            "<div id='ck-button' class='rounded-full border px-3 hover:bg-slate-300 hover:text-slate-800'>" +
+                            "<div id='ck-button' class='ck-button rounded-full border px-3 hover:bg-slate-300 hover:text-slate-800'>" +
                             "<label>" +
                             `<input class='checkboxes ' type='checkbox' value='${element.id}' onchange='toggleChecked(this)'><span>Check</span>` +
                             "</label>" +
@@ -195,8 +195,8 @@
             let url = "{{ route('draft.export-pasal-pdf') }}"
             let param = selected.toString()
             let paramUrl = `${url}?pasals=${param}`
-            console.log(paramUrl)
-            window.location.href = paramUrl
+            // window.location.href = paramUrl
+            window.open(paramUrl, "_blank")
         })
     </script>
 @endsection
