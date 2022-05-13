@@ -11,7 +11,7 @@
         <div id='container'>
             <form action="{{ route('archive.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="p-5 mb-5 grid gap-5 shadow border border-slate-300 border-t-8 border-t-sky-700 rounded-md overflow-hidden bg-white">
+                <div class="p-5 mb-5 grid gap-5 shadow border border-slate-300 border-t-8  border-t-sky-700 rounded-md overflow-hidden bg-white">
                     <input type="text" name="uu" value="UU No. X Tahun YYYY" class="w-full font-semibold border-0 border-b-2 border-b-slate-400 focus:ring-0 p-2 text-2xl" required>
                     <input type="text" name="tentang" placeholder="Tentang" class="w-full h-5 border-0 border-b-2 border-b-slate-400 overflow-y-auto focus:ring-0 p-2 pt-0" required>
                     <select name="category" class="w-auto rounded" required>

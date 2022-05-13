@@ -35,6 +35,10 @@
 
 <body class="min-h-screen text-slate-700 bg-gradient-to-tr from-slate-100 to-slate-50">
 
+    <a href="#footer" id="scrollToBottom" class="grid place-items-center rounded-full h-7 w-7 bg-sky-600 fixed right-8 bottom-8 opacity-0 ease-out">
+        <i class='bx bx-down-arrow-alt text-lg font-bold'></i>
+    </a>
+
     <div class="grid grid-rows-[auto_1fr_auto] min-h-screen">
         <div id="loader" class="fixed hidden w-screen h-screen">
             <div class="grid place-items-center h-full ">
@@ -60,19 +64,19 @@
         @yield('content')
         {{-- </div> --}}
         {{-- FOOTER --}}
-        <div class="py-3 text-center text-sm bg-slate-200">
+        <div id="footer" class="py-3 text-center text-sm bg-slate-200">
             Copyright &copy; {{ date('Y') }} Powered by Universitas Lampung
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.13.216/build/pdf.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/b-2.0.1/fc-4.0.1/sl-1.3.3/datatables.min.js"></script>
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 
     <script src="{{ asset('js/dataTableFilter.js') }}"></script>
+    <script src="{{ asset('js/components.js') }}"></script>
 
     @yield('datatable')
 

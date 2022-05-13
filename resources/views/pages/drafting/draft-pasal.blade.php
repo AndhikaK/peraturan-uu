@@ -120,6 +120,8 @@
                             `<input class='checkboxes ' type='checkbox' value='${element.id}' onchange='toggleChecked(this)'><span>Check</span>` +
                             "</label>" +
                             "</div>" +
+                            `<a href='/draft/${element.id_tbl_uu}?theme=${getTheme()}' class='btn-rounded-solid-cyan'>Detail` +
+                            "</a>" +
                             "</div>" +
                             "</div>" +
                             "</div>";
@@ -157,6 +159,10 @@
             }
 
             countSelected()
+        }
+
+        function getTheme() {
+            return $('#theme').val()
         }
 
         function countSelected() {

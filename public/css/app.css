@@ -3237,6 +3237,12 @@ body[dir="rtl"] .checkbox:checked,
 .top-5 {
   top: 1.25rem;
 }
+.right-8 {
+  right: 2rem;
+}
+.bottom-8 {
+  bottom: 2rem;
+}
 .z-0 {
   z-index: 0;
 }
@@ -3283,9 +3289,6 @@ body[dir="rtl"] .checkbox:checked,
 }
 .mb-2 {
   margin-bottom: 0.5rem;
-}
-.-mb-px {
-  margin-bottom: -1px;
 }
 .mb-8 {
   margin-bottom: 2rem;
@@ -3362,9 +3365,6 @@ body[dir="rtl"] .checkbox:checked,
 .h-7 {
   height: 1.75rem;
 }
-.h-10 {
-  height: 2.5rem;
-}
 .h-1\/2 {
   height: 50%;
 }
@@ -3382,6 +3382,9 @@ body[dir="rtl"] .checkbox:checked,
 }
 .h-32 {
   height: 8rem;
+}
+.h-10 {
+  height: 2.5rem;
 }
 .h-8 {
   height: 2rem;
@@ -3415,6 +3418,9 @@ body[dir="rtl"] .checkbox:checked,
 }
 .max-h-8 {
   max-height: 2rem;
+}
+.max-h-screen {
+  max-height: 100vh;
 }
 .min-h-screen {
   min-height: 100vh;
@@ -3483,6 +3489,9 @@ body[dir="rtl"] .checkbox:checked,
 }
 .w-4\/6 {
   width: 66.666667%;
+}
+.w-10 {
+  width: 2.5rem;
 }
 .min-w-0 {
   min-width: 0px;
@@ -3758,6 +3767,9 @@ body[dir="rtl"] .checkbox:checked,
 .overflow-x-scroll {
   overflow-x: scroll;
 }
+.overflow-y-scroll {
+  overflow-y: scroll;
+}
 .whitespace-nowrap {
   white-space: nowrap;
 }
@@ -3878,10 +3890,6 @@ body[dir="rtl"] .checkbox:checked,
 .border-slate-400 {
   --tw-border-opacity: 1;
   border-color: rgb(148 163 184 / var(--tw-border-opacity));
-}
-.border-blue-500 {
-  --tw-border-opacity: 1;
-  border-color: rgb(59 130 246 / var(--tw-border-opacity));
 }
 .border-gray-200 {
   --tw-border-opacity: 1;
@@ -4433,10 +4441,6 @@ body[dir="rtl"] .checkbox:checked,
   --tw-text-opacity: 1;
   color: rgb(239 68 68 / var(--tw-text-opacity));
 }
-.text-blue-600 {
-  --tw-text-opacity: 1;
-  color: rgb(37 99 235 / var(--tw-text-opacity));
-}
 .text-sky-900 {
   --tw-text-opacity: 1;
   color: rgb(12 74 110 / var(--tw-text-opacity));
@@ -4601,14 +4605,6 @@ body[dir="rtl"] .checkbox:checked,
 .last\:text-slate-500:last-child {
   --tw-text-opacity: 1;
   color: rgb(100 116 139 / var(--tw-text-opacity));
-}
-.hover\:border-gray-400:hover {
-  --tw-border-opacity: 1;
-  border-color: rgb(156 163 175 / var(--tw-border-opacity));
-}
-.hover\:border-blue-500:hover {
-  --tw-border-opacity: 1;
-  border-color: rgb(59 130 246 / var(--tw-border-opacity));
 }
 .hover\:border-gray-300:hover {
   --tw-border-opacity: 1;
@@ -4941,11 +4937,6 @@ body[dir="rtl"] .checkbox:checked,
 
   .sm\:text-right {
     text-align: right;
-  }
-
-  .sm\:text-base {
-    font-size: 1rem;
-    line-height: 1.5rem;
   }
 }
 @media (min-width: 768px) {

@@ -186,6 +186,35 @@ class DraftController extends Controller
     }
 
 
+    // public function show(Request $request, $id)
+    // {
+    //     // PAGE SETUP
+    //     $pageTitle = 'Detail';
+    //     $active = 'Drafting';
+    //     $breadCrumbs = [
+    //         'bx-icon' => 'bx bxs-book-content',
+    //         'list' => [
+    //             ['title' => 'Drafting', 'url' => route('archive.index')],
+    //             ['title' => 'Detail', 'url' => ''],
+    //         ]
+    //     ];
+    //     // GET DATA
+    //     $archiveUU = Archive::with(['category'])->find($id);
+    //     $penuh = $this->calcSimilarity($request->theme, $archiveUU);
+
+    //     return view('pages.draft-detail', [
+    //         'user' => Auth::user(),
+    //         'pageTitle' => $pageTitle,
+    //         'active' => $active,
+    //         'breadCrumbs' => $breadCrumbs,
+    //         'navs' => $this->NavigationList(),
+    //         'theme' => $request->theme,
+    //         'archiveUU' => $archiveUU,
+    //         'view' => $request->view,
+    //         'penuh' => $penuh,
+    //     ]);
+    // }
+
     public function show(Request $request, $id)
     {
         // PAGE SETUP
@@ -201,6 +230,7 @@ class DraftController extends Controller
         // GET DATA
         $archiveUU = Archive::with(['category'])->find($id);
         $penuh = $this->calcSimilarity($request->theme, $archiveUU);
+        // dd($penuh);
 
         return view('pages.draft-detail', [
             'user' => Auth::user(),
@@ -210,7 +240,6 @@ class DraftController extends Controller
             'navs' => $this->NavigationList(),
             'theme' => $request->theme,
             'archiveUU' => $archiveUU,
-            'view' => $request->view,
             'penuh' => $penuh,
         ]);
     }
