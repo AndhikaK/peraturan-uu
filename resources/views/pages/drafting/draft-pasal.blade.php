@@ -78,7 +78,7 @@
             });
 
             function getParamUrl(url) {
-                url = addParameter(url, "theme", theme.val(), false);
+                url = addParameter(url, "theme", theme.val().split('\n').join(' '), false);
 
                 return url;
             }

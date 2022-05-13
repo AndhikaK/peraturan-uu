@@ -15,7 +15,6 @@ class HarmonisasiController extends Controller
 
     public function index()
     {
-
         // PAGE SETUP
         $pageTitle = 'Harmonisasi';
         $active = 'Harmonisasi';

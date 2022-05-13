@@ -140,22 +140,35 @@ trait PrepareArchive
         }
     }
 
-    public function simpanPasal($insert)
-    {
-        $id_uu_pasal = $insert->id;
-        $prep = array(
-            'id_uu_pasal' => $id_uu_pasal,
-            'uud_content' => $insert->uud_content,
-        );
-        $url = 'http://localhost:5000/undang/tambahPasal';
+    // public function simpanPasal($insert)
+    // {
+    //     $id_uu_pasal = $insert->id;
+    //     $prep = array(
+    //         'id_uu_pasal' => $id_uu_pasal,
+    //         'uud_content' => $insert->uud_content,
+    //     );
+    //     $url = 'http://localhost:5000/undang/tambahPasal';
 
-        $response = Http::withBody(json_encode($prep), "application/json")->post($url);
+    //     $response = Http::withBody(json_encode($prep), "application/json")->post($url);
+    //     $result = $response->json();
+
+    //     $insertPre = PreprocessingPasal::create([
+    //         'id_uu_pasal' => $id_uu_pasal,
+    //         'uud_detail' => $result['values'],
+    //     ]);
+    // }
+    public function simpanPasal($pasalToInsert)
+    {
+
+        $url = 'http://localhost:5000/undang/tambahPasal';
+        dd(json_encode($pasalToInsert));
+        $response = Http::withBody(json_encode($pasalToInsert), "application/json")->post($url);
         $result = $response->json();
 
-        $insertPre = PreprocessingPasal::create([
-            'id_uu_pasal' => $id_uu_pasal,
-            'uud_detail' => $result['values'],
-        ]);
+        // $insertPre = PreprocessingPasal::create([
+        //     'id_uu_pasal' => $id_uu_pasal,
+        //     'uud_detail' => $result['values'],
+        // ]);
     }
 
     function array_stopword()

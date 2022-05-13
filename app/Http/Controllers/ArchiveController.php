@@ -172,13 +172,20 @@ class ArchiveController extends Controller
             }
         }
         // INSERT PASAL RECORD
+        $pasalToInsert = [];
         foreach ($pasalUpload as $item) {
             $insert = Pasal::create(
                 $item
             );
             // PRERPOCESS FOR PASAL THROUGH OMNILAW FLASK APP
-            $this->simpanPasal($insert);
+            $array = [];
+            $array['id_uu_pasal'] = $insert->id;
+            $array['uud_content'] = $insert->uud_content;
+            array_push($pasalToInsert, $array);
+            // $this->simpanPasal($insert);
         }
+        // dd($pasalToInsert);
+        $this->simpanPasal($pasalToInsert);
 
         // } catch (Exception $e) {
         //     dd($e);
@@ -519,7 +526,7 @@ class ArchiveController extends Controller
     public function destroy($id)
     {
         try {
-            $archive = Archive::find($id)->delete();
+            $archive = Archive::find($id);
             $stemming = Stemming::where('id_tbl_uu', $id)->first();
             if ($stemming) {
                 $stemming->delete();
@@ -528,12 +535,13 @@ class ArchiveController extends Controller
             $pasals = Pasal::where('id_tbl_uu', $id)->get();
             foreach ($pasals as $pasal) {
                 $idPasal = $pasal->id;
-                $pasal->delete();
                 $prepPasal = PreprocessingPasal::find($idPasal);
                 if ($prepPasal) {
                     $prepPasal->delete();
                 }
+                $pasal->delete();
             }
+            $archive->delete();
         } catch (Exception $e) {
             return redirect(route('archive.index'))->with('failed', 'Something wrong!');
         }
