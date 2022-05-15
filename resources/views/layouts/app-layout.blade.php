@@ -35,8 +35,8 @@
 
 <body class="min-h-screen text-slate-700 bg-gradient-to-tr from-slate-100 to-slate-50">
 
-    <a href="#footer" id="scrollToBottom" class="grid place-items-center rounded-full h-7 w-7 bg-sky-600 fixed right-8 bottom-8 opacity-0 ease-out">
-        <i class='bx bx-down-arrow-alt text-lg font-bold'></i>
+    <a href="#footer" id="scrollToBottom" class="grid place-items-center rounded-full h-11 w-11 bg-white border border-sky-400 fixed right-8 bottom-8 opacity-0 ease-out animate-bounce hover:shadow-lg text-sky-600 z-50">
+        <i class='bx bx-down-arrow-alt text-3xl font-bold'></i>
     </a>
 
     <div class="grid grid-rows-[auto_1fr_auto] min-h-screen">

@@ -3,12 +3,12 @@ $(document).scroll(function () {
 
     var myScrollFunc = function () {
         var y = window.scrollY;
+        let className =
+            "grid place-items-center rounded-full h-11 w-11 bg-white border border-sky-400 fixed right-8 bottom-8 ease-out animate-bounce hover:shadow-lg text-sky-600 z-50";
         if (y >= 100) {
-            myID.className =
-                "grid place-items-center text-white animate-bounce rounded-full h-15 w-15 bg-sky-600 fixed right-8 bottom-8 opacity-150 ease-out";
+            myID.className = className + "opacity-1";
         } else {
-            myID.className =
-                "grid place-items-center text-white animate-bounce rounded-full h-15 w-15 bg-sky-600 fixed right-8 bottom-8 opacity-0 ease-out";
+            myID.className = className + "opacity-0";
         }
     };
 

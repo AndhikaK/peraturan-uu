@@ -15,6 +15,7 @@ use PhpParser\Node\Stmt\Foreach_;
 use Smalot\PdfParser\Parser;
 use Yajra\DataTables\Facades\DataTables;
 use File;
+use Illuminate\Support\Facades\Http;
 
 class ArchiveController extends Controller
 {
@@ -96,6 +97,30 @@ class ArchiveController extends Controller
             'navs' => $this->NavigationList(),
             'archive' => $archive,
             'pasals' => $pasals,
+        ]);
+    }
+
+    public function showPasal($id)
+    {
+        // PAGE SETUP
+        $pageTitle = 'Arsip';
+        $active = 'Arsip';
+        $breadCrumbs = [
+            'bx-icon' => 'bx bx-notepad',
+            'list' => [
+                ['title' => 'Arsip', 'url' => route('archive.index')],
+            ]
+        ];
+        // QUERY PASAL
+        $pasal = Pasal::with(['uu', 'uu.category'])->find($id);
+
+        return view('pages.archive.show-pasal', [
+            'user' => Auth::user(),
+            'pageTitle' => $pageTitle,
+            'active' => $active,
+            'breadCrumbs' => $breadCrumbs,
+            'navs' => $this->NavigationList(),
+            'pasal' => $pasal,
         ]);
     }
 
@@ -185,7 +210,7 @@ class ArchiveController extends Controller
             // $this->simpanPasal($insert);
         }
         // dd($pasalToInsert);
-        $this->simpanPasal($pasalToInsert);
+        $this->simpanPasalBulk($pasalToInsert);
 
         // } catch (Exception $e) {
         //     dd($e);
@@ -511,16 +536,43 @@ class ArchiveController extends Controller
                 }
             }
             // INSERT PASAL RECORD
+            $pasalToInsert = [];
             foreach ($pasalUpload as $item) {
                 $pasalU = Pasal::create(
                     $item
                 );
-                $this->simpanPasal($pasalU);
+                $array = [];
+                $array['id_uu_pasal'] = $pasalU->id;
+                $array['uud_content'] = $pasalU->uud_content;
+                array_push($pasalToInsert, $array);
             }
+            $this->simpanPasalBulk($pasalToInsert);
         } catch (Exception $e) {
             return redirect(route('archive.show', $id))->with('failed', 'Something wrong!');
         }
         return redirect(route('archive.show', $id))->with('success', 'Data Undang-Undang berhasil diperbarui!');
+    }
+
+    public function updatePasal(Request $request, $id)
+    {
+        $request->validate([
+            'uud_content' => 'required',
+        ]);
+
+        $pasal = Pasal::find($id);
+        $pasal->update([
+            'uud_content' => $request->uud_content,
+        ]);
+
+        $url = 'http://localhost:5000/undang/ubahPasal';
+        $response = Http::withBody(json_encode([
+            'id_uu_pasal' => $id,
+            'uud_content' => $request->uud_content,
+        ]), "application/json")
+            ->post($url);
+        $result = $response->json();
+
+        return redirect(route('archive.show', $pasal->id_tbl_uu))->with('success', 'Pasal berhasil diupdate!');
     }
 
     public function destroy($id)

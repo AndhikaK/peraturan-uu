@@ -36,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('account-data', [AccountController::class, 'accountData'])->name('account.data');
     Route::get('category-data', [CategoryController::class, 'categoryData'])->name('category.data');
+    Route::get('show-pasal/{id}', [ArchiveController::class, 'showPasal'])->name('archive.show-pasal');
+    Route::post('update-pasal/{id}', [ArchiveController::class, 'updatePasal'])->name('archive.update-pasal');
 });
 
 // ROUTE FOR DATATABLES DATA

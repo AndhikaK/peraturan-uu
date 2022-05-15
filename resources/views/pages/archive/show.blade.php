@@ -84,12 +84,15 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="p-3 border-b border-l border-slate-300">
+                            <div class="group relative p-3 border-b border-l border-slate-300">
                                 <div class="font-bold capitalize">{{ str_replace('~', ' ', $pasal->uud_id) }}</div>
                                 <div>
                                     <?php $pasal->uud_content = str_replace('<br>', "\r\n", $pasal->uud_content); ?>
                                     <div class="whitespace-pre-wrap">{{ $pasal->uud_content }}</div>
                                 </div>
+                                <a href="{{ route('archive.show-pasal', $pasal->id) }}" class="absolute hidden group-hover:block hover:text-sky-600 hover:bg-slate-200 hover:shadow-md top-3 w-6 h-6 rounded-full border border-slate-400 text-center align-middle right-0 bg-white -z-0">
+                                    <i class='bx bxs-edit-alt'></i>
+                                </a>
                             </div>
                         </div>
                         <?php

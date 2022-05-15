@@ -157,18 +157,16 @@ trait PrepareArchive
     //         'uud_detail' => $result['values'],
     //     ]);
     // }
-    public function simpanPasal($pasalToInsert)
+    public function simpanPasalBulk($pasalToInsert)
     {
 
-        $url = 'http://localhost:5000/undang/tambahPasal';
-        dd(json_encode($pasalToInsert));
-        $response = Http::withBody(json_encode($pasalToInsert), "application/json")->post($url);
-        $result = $response->json();
+        $url = 'http://localhost:5000/undang/tambahPasal_Bulk';
 
-        // $insertPre = PreprocessingPasal::create([
-        //     'id_uu_pasal' => $id_uu_pasal,
-        //     'uud_detail' => $result['values'],
-        // ]);
+        $response = Http::withBody(json_encode([
+            'data' => $pasalToInsert
+        ]), "application/json")
+            ->post($url);
+        $result = $response->json();
     }
 
     function array_stopword()
