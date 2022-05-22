@@ -12,6 +12,7 @@
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "phpoffice/phpword": "^0.18.3",
         "sastrawi/sastrawi": "^1",
         "smalot/pdfparser": "^2.1",
         "spatie/laravel-permission": "^5.5",

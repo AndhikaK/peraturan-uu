@@ -15,7 +15,6 @@
 </div>
 
 <div class="sticky bottom-5 left-5 flex justify-start mt-5">
-
     <label for="selectedPasalModal">
         <div id="checked-counter-container" class="hidden backdrop-blur-sm h-11 w-11 text-center align-middle border border-slate-300 bg-white rounded-md relative cursor-pointer hover:shadow-lg">
             <div class="absolute h-4 w-4 text-center -top-1 -right-2 rounded-full bg-sky-600 text-sky-600 text-xs font-bold animate-ping">
@@ -44,8 +43,9 @@
             <div id="selectedPasalContainer" class="font-bold">
             </div>
         </div>
-        <div class="pt-3 flex justify-end border-t border-t-slate-200 ">
+        <div class="pt-3 flex gap-3 justify-end border-t border-t-slate-200 ">
             <button id="draftExportPDF" class="btn-rounded-solid-cyan">PDF</ id="draftExportPDF">
+                <button id="draftExportWord" class="btn-rounded-solid-cyan">Word</ id="draftExportWord">
         </div>
     </div>
 </div>
@@ -87,7 +87,6 @@
                 let pasalContainer = $("#pasal-result");
                 let paginatedData = paginate(data, 10, 1);
                 totalData = paginatedData
-                console.log(totalData)
 
                 if (paginatedData.length > 0) {
                     pasalContainer.html('')
@@ -181,9 +180,7 @@
 
             let cont = $('#selectedPasalContainer')
             cont.html('')
-            console.log(selected, totalData)
             totalData.forEach(function(element) {
-                // console.log(selected.includes(element.id))
                 if (selected.includes(String(element.id))) {
                     let el =
                         "<div class='font-bold mt-3'>" +
@@ -200,7 +197,14 @@
         $('#draftExportPDF').click(function() {
             let url = "{{ route('draft.export-pasal-pdf') }}"
             let param = selected.toString()
-            let paramUrl = `${url}?pasals=${param}`
+            let paramUrl = `${url}?type=pdf&pasals=${param}`
+            // window.location.href = paramUrl
+            window.open(paramUrl, "_blank")
+        })
+        $('#draftExportWord').click(function() {
+            let url = "{{ route('draft.export-pasal-word') }}"
+            let param = selected.toString()
+            let paramUrl = `${url}?type=word&pasals=${param}`
             // window.location.href = paramUrl
             window.open(paramUrl, "_blank")
         })

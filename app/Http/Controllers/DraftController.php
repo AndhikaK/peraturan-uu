@@ -139,14 +139,14 @@ class DraftController extends Controller
                         $data[$key]['id_arsip'] = $listData[$key]->id_tbl_uu;
                         $data[$key]['judul_arsip'] = $listData[$key]->uu;
                         $data[$key]['jenis_arsip'] = $listData[$key]->tentang;
-                        $data[$key]['kategori'] = $listData[$key]->category->nama_kategori;
+                        $data[$key]['kategori'] = $listData[$key]->category ? $listData[$key]->category->nama_kategori : ' ';
                         $data[$key]['kataSama'] = $newKataSama[$key];
                         $data[$key]['cosSim'] = $cosSim[$key];
                     } else {
                         $data[$key]['id_arsip'] = $listData[$key]->id_tbl_uu;
                         $data[$key]['judul_arsip'] = $listData[$key]->uu;
                         $data[$key]['jenis_arsip'] = $listData[$key]->tentang;
-                        $data[$key]['kategori'] = $listData[$key]->category->nama_kategori;
+                        $data[$key]['kategori'] = $listData[$key]->category ? $listData[$key]->category->nama_kategori : ' ';
                         $data[$key]['kataSama'] = '0';
                         $data[$key]['cosSim'] = 0;
                     }
@@ -156,7 +156,7 @@ class DraftController extends Controller
                     $data[$key]['id_arsip'] = $listData[$key]->id_tbl_uu;
                     $data[$key]['judul_arsip'] = $listData[$key]->uu;
                     $data[$key]['jenis_arsip'] = $listData[$key]->tentang;
-                    $data[$key]['kategori'] = $listData[$key]->category->nama_kategori;
+                    $data[$key]['kategori'] = $listData[$key]->category ? $listData[$key]->category->nama_kategori : ' ';
                     $data[$key]['kataSama'] = 0;
                     $data[$key]['cosSim'] = 0;
                 }
@@ -186,38 +186,13 @@ class DraftController extends Controller
     }
 
 
-    // public function show(Request $request, $id)
-    // {
-    //     // PAGE SETUP
-    //     $pageTitle = 'Detail';
-    //     $active = 'Drafting';
-    //     $breadCrumbs = [
-    //         'bx-icon' => 'bx bxs-book-content',
-    //         'list' => [
-    //             ['title' => 'Drafting', 'url' => route('archive.index')],
-    //             ['title' => 'Detail', 'url' => ''],
-    //         ]
-    //     ];
-    //     // GET DATA
-    //     $archiveUU = Archive::with(['category'])->find($id);
-    //     $penuh = $this->calcSimilarity($request->theme, $archiveUU);
-
-    //     return view('pages.draft-detail', [
-    //         'user' => Auth::user(),
-    //         'pageTitle' => $pageTitle,
-    //         'active' => $active,
-    //         'breadCrumbs' => $breadCrumbs,
-    //         'navs' => $this->NavigationList(),
-    //         'theme' => $request->theme,
-    //         'archiveUU' => $archiveUU,
-    //         'view' => $request->view,
-    //         'penuh' => $penuh,
-    //     ]);
-    // }
 
     public function show(Request $request, $id)
     {
         // PAGE SETUP
+        if (!$request->theme) {
+            return redirect(route('draft.index'))->with('failed', 'Error saat membaca kata kunci!');
+        }
         $pageTitle = 'Detail';
         $active = 'Drafting';
         $breadCrumbs = [
@@ -230,7 +205,24 @@ class DraftController extends Controller
         // GET DATA
         $archiveUU = Archive::with(['category'])->find($id);
         $penuh = $this->calcSimilarity($request->theme, $archiveUU);
-        // dd($penuh);
+        $pasals = Pasal::with(['uu'])
+            ->where('id_tbl_uu', $id)
+            ->where(function ($query) {
+                $query->where('uud_id', 'LIKE', '%pasal%')
+                    ->orWhere('uud_id', 'LIKE', '%ayat%');
+            })->get();
+
+        $simplePasal = [];
+        $i = 0;
+        foreach ($pasals as $item) {
+            $simplePasal[$i]['id'] = $item->id;
+            $simplePasal[$i]['uu'] = $item->uu->uu;
+            $simplePasal[$i]['tentang'] = $item->uu->tentang;
+            $simplePasal[$i]['uud_id'] = $item->uud_id;
+            $simplePasal[$i]['uud_content'] = $this->findSimilarity($request->theme, $item->uud_content);
+            // $item->uud_content .= $this->findSimilarity($request->theme, $item->uud_content);
+            $i++;
+        }
 
         return view('pages.draft-detail', [
             'user' => Auth::user(),
@@ -239,9 +231,53 @@ class DraftController extends Controller
             'breadCrumbs' => $breadCrumbs,
             'navs' => $this->NavigationList(),
             'theme' => $request->theme,
+            'pasals' => $pasals,
+            'simplePasal' => $simplePasal,
             'archiveUU' => $archiveUU,
             'penuh' => $penuh,
         ]);
+    }
+    private function findSimilarity($theme, $str)
+    {
+        // STEM THE THEM INPUT
+        $stemmerFactory = new StemmerFactory;
+        $stemmer = $stemmerFactory->createStemmer();
+        $stemmingQuery = $stemmer->stem($theme);
+        // TRANSFORM QUERY INTO ARRAY
+        $query = explode(' ', $stemmingQuery);
+
+        // GET ARCHIVE UU FILE PATH
+        $newArsipPembanding1 = $str;
+
+        $newArsipPembanding1 = str_ireplace("\n", "<br>", $newArsipPembanding1);
+
+        $stemminghtml = explode("<br>", $newArsipPembanding1);
+
+        foreach ($stemminghtml as $key => $value) {
+            $stemminghtml[$key] = explode(" ", $value);
+        }
+        $count = 0;
+        foreach ($stemminghtml as $key => $value) {
+            foreach ($value as $key1 => $value1) {
+                if (
+                    in_array($stemmer->stem(strtolower($stemminghtml[$key][$key1])), $query)
+                ) {
+                    $count++;
+                    $stemminghtml[$key][$key1] = '<span style="background: yellow">' . $stemminghtml[$key][$key1] . '</span>';
+                }
+            }
+        }
+
+        foreach ($stemminghtml as $key => $value) {
+            $stemminghtmlnew[$key] = implode(' ', $value);
+        }
+        $stemminghtmlnew = implode("<br>", $stemminghtmlnew);
+
+        // return $stemminghtmlnew;
+        return [
+            'count' => $count,
+            'content' => $stemminghtmlnew,
+        ];
     }
 
     private function calcSimilarity($theme, $data)
@@ -304,5 +340,44 @@ class DraftController extends Controller
         ]);
 
         return $pdf->stream('OMNILAW_DRAFT_' . date('ymdhi'));
+    }
+
+    public function exportDraftToWord(Request $request)
+    {
+        $pasals = explode(',', $request->pasals);
+        $pasalResults = Pasal::with(['uu'])->findMany($pasals);
+
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+        // Adding Text element with font customized using explicitly created font style object...
+        $fontBold = new \PhpOffice\PhpWord\Style\Font();
+        $fontBold->setBold(true);
+
+        $filename = 'DRAFTING RESULT.docx';
+        $section = $phpWord->addSection();
+        $section->addText('Hasil Drafting Undang-Undang')->setFontStyle($fontBold);
+        foreach ($pasalResults as $item) {
+            $section->addText('');
+            $section->addText($item->uu->uu . $item->uu->tentang)->setFontStyle($fontBold);
+            $section->addText($item->uud_id);
+            $section->addText($item->uud_content);
+        }
+
+        // Saving the document as OOXML file...
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save($filename);
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . $filename);
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($filename));
+        flush();
+        readfile($filename);
+        unlink($filename); // deletes the temporary file
+        exit;
     }
 }

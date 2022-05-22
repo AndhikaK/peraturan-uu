@@ -84,8 +84,8 @@ class ArchiveController extends Controller
         $archive = Archive::with(['category'])->find($id);
         $pasals = Pasal::where('id_tbl_uu', $id)
             ->where(function ($query) {
-                $query->where('uud_section', 'pasal')
-                    ->orWhere('uud_section', 'ayat');
+                $query->where('uud_id', 'LIKE', '%pasal%')
+                    ->orWhere('uud_id', 'LIKE', '%ayat%');
             })
             ->orderBy('id')->get();
 
@@ -283,7 +283,6 @@ class ArchiveController extends Controller
         $arrContent = explode("\n", $content);
 
         // REQURED INFORMATION
-        $totalPasal = 62;
         $indexedPasal = [];
 
         // TRIM ALL SPACES INSIDE ARRAY DOCUMENT
@@ -351,7 +350,6 @@ class ArchiveController extends Controller
             // EXTRAXT THE LAST INDEX
             if ($idx == count($indexedPasal) - 1) {
                 $pasalContent[$idx]['title'] = $content['content'];
-                // $pasalContent[$idx]['content'] = array_slice($arrContentLowerCase, $content['index']);
                 $pasalContent[$idx]['content'][0] = 'Undang-Undang ini mulai berlaku pada saat diundangkan';
             }
         }
@@ -363,36 +361,48 @@ class ArchiveController extends Controller
             $pasalAyat[$i]['title'] = $pasal['title'];
             $pasalAyat[$i]['content'] = [];
             $currentAyat = 1;
+            $foundBAB = false;
             foreach ($pasal['content'] as $ayat) {
-                $firstWord = explode(' ', $ayat)[0];
-                $firstWordLength = strlen($firstWord);
-                $firstChar = substr($firstWord, 0, 1);
-                $midleChar = substr($firstWord, 1, $firstWordLength - 2);
-                $lastChar = substr($firstWord, -1);
-                $arrayLength = count($pasalAyat[$i]['content']);
-                if ($firstChar == '(' && $lastChar == ')') {
-                    if (is_numeric($midleChar)) {
+                // REMOVE UNNECESARY STRING, EX: -8-, -9-, BAB, and BAB TITLE
+                if ((substr($ayat, 0, 1) == '-' && substr($ayat, -1) == '-') || (substr($ayat, 0, 3) == 'BAB') || ($foundBAB)) {
+                    $foundBAB = true;
+                } else {
+                    // CHECK THE FIRST WORD OF EACH LINE TO FIND A PASAL FORMAT, EX: (1), (2), (3)
+                    $firstWord = explode(' ', $ayat)[0];
+                    $firstWordLength = strlen($firstWord);
+                    $firstChar = substr($firstWord, 0, 1);
+                    $midleChar = substr($firstWord, 1, $firstWordLength - 2);
+                    $lastChar = substr($firstWord, -1);
+                    $arrayLength = count($pasalAyat[$i]['content']);
+                    // IF THE FIRST WORD IS IN PASAL FORMAT, THEN PUSH INTO NEW AYAT
+                    if ($firstChar == '(' && $lastChar == ')') {
+                        if (is_numeric($midleChar)) {
+                            if (empty($pasalAyat[$i]['content'])) {
+                                array_push($pasalAyat[$i]['content'], $ayat);
+                            } else {
+                                if ($midleChar == $currentAyat + 1) {
+                                    array_push($pasalAyat[$i]['content'], $ayat);
+                                    $currentAyat++;
+                                    $foundBAB = false;
+                                } else {
+                                    // ADD NEW LINE IF ITS A NUMBER
+                                    $divider = $firstWordLength <= 4 && $lastChar == '.' ? "\n" : ' ';
+                                    $pasalAyat[$i]['content'][$arrayLength - 1] .= $divider . $ayat;
+                                }
+                            }
+                        } else {
+                            // ADD NEW LINE IF ITS A NUMBER
+                            $divider = $firstWordLength <= 4 && $lastChar == '.' ? "\n" : ' ';
+                            $pasalAyat[$i]['content'][$arrayLength - 1] .= $divider . $ayat;
+                        }
+                    } else {
                         if (empty($pasalAyat[$i]['content'])) {
                             array_push($pasalAyat[$i]['content'], $ayat);
                         } else {
-                            if ($midleChar == $currentAyat + 1) {
-                                array_push($pasalAyat[$i]['content'], $ayat);
-                                $currentAyat++;
-                            } else {
-                                $divider = $firstWordLength == 2 && $firstWord[1] == '.' ? "\n" : ' ';
-                                $pasalAyat[$i]['content'][$arrayLength - 1] .= $divider . $ayat;
-                            }
+                            // ADD NEW LINE IF ITS A NUMBER
+                            $divider = $firstWordLength <= 4 && $lastChar == '.' ? "\n" : ' ';
+                            $pasalAyat[$i]['content'][$arrayLength - 1] .= $divider . $ayat;
                         }
-                    } else {
-                        $divider = $firstWordLength == 2 && $firstWord[1] == '.' ? "\n" : ' ';
-                        $pasalAyat[$i]['content'][$arrayLength - 1] .= $divider . $ayat;
-                    }
-                } else {
-                    if (empty($pasalAyat[$i]['content'])) {
-                        array_push($pasalAyat[$i]['content'], $ayat);
-                    } else {
-                        $divider = $firstWordLength == 2 && $firstWord[1] == '.' ? "\n" : ' ';
-                        $pasalAyat[$i]['content'][$arrayLength - 1] .= $divider . $ayat;
                     }
                 }
             }
@@ -442,8 +452,8 @@ class ArchiveController extends Controller
         $archive = Archive::with(['category'])->find($id);
         $pasals = Pasal::where('id_tbl_uu', $id)
             ->where(function ($query) {
-                $query->where('uud_section', 'pasal')
-                    ->orWhere('uud_section', 'ayat');
+                $query->where('uud_id', 'LIKE', '%pasal%')
+                    ->orWhere('uud_id', 'LIKE', '%ayat%');
             })
             ->orderBy('id')->get();
 

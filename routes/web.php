@@ -58,5 +58,6 @@ Route::get('harmonisasi-result-detail', [HarmonisasiController::class, 'resultDe
 
 // EXPORT DATA
 Route::get('pasal_export', [DraftController::class, 'exportDraft'])->name('draft.export-pasal-pdf');
+Route::get('pasal_export_word', [DraftController::class, 'exportDraftToWord'])->name('draft.export-pasal-word');
 
 require __DIR__ . '/auth.php';

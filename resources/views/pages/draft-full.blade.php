@@ -83,5 +83,9 @@
                 return url;
             }
         });
+
+        function redirectToDetail(id) {
+            location = "{{ route('draft.index') }}" + `/${id}?theme=` + $('#theme').val()
+        }
     </script>
 @endsection
