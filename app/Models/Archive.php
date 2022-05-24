@@ -13,6 +13,10 @@ class Archive extends Model
     protected $primaryKey = 'id_tbl_uu';
 
     protected $guarded = ['id_tbl_uu'];
+    // protected $table = 'tbl_arsip';
+    // protected $primaryKey = 'id_arsip';
+
+    // protected $guarded = ['id_arsip'];
     const UPDATED_AT = null;
     const CREATED_AT = null;
 

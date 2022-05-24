@@ -57,6 +57,7 @@ class DraftController extends Controller
 
     public function hitungCousine(Request $request)
     {
+        $theme = strtolower($request->theme);
         $dataTF = StemmingTable::get();
         // PROCESS IF dataTF NOT NULL
         if ($dataTF) {
@@ -64,7 +65,7 @@ class DraftController extends Controller
             $stemmer = $stemmerFactory->createStemmer();
 
             // STEMMING THEME (menghilangkan imbuhan dan akhiran setiap kata pada tema input)
-            $stemmingQuery = $stemmer->stem($request->theme);
+            $stemmingQuery = $stemmer->stem($theme);
             // TRANSFORM QUERY INTO ARRAY
             $queries = explode(' ', $stemmingQuery);
             foreach ($dataTF as $key => $value) {
@@ -102,7 +103,6 @@ class DraftController extends Controller
             }
 
             $listData = Archive::with(['category'])->get();
-
             if (!empty($kataSama) && !empty($topCos)) {
                 foreach ($kataSama as $key => $value) {
                     if (!empty($kataSama[$key]) && !empty($topCos[$key])) {
@@ -113,7 +113,6 @@ class DraftController extends Controller
                     $newTopCos[$key] = array_sum($topCos[$key]);
                 }
 
-                // echo "<pre>";print_r($newTopCos[5]);die;
                 foreach ($count as $key => $value) {
                     foreach ($value as $key1 => $value1) {
                         $bottomCos[$key][$key1] = pow($value[$key1], 2);
@@ -136,6 +135,13 @@ class DraftController extends Controller
 
                 foreach ($listData as $key => $value) {
                     if (!empty($newKataSama[$key])) {
+                        // $data[$key]['id_arsip'] = $listData[$key]->id_arsip;
+                        // $data[$key]['judul_arsip'] = $listData[$key]->judul_arsip;
+                        // $data[$key]['jenis_arsip'] = $listData[$key]->jenis_arsip;
+                        // $data[$key]['kategori'] = $listData[$key]->category ? $listData[$key]->category->nama_kategori : ' ';
+                        // $data[$key]['kataSama'] = $newKataSama[$key];
+                        // $data[$key]['cosSim'] = $cosSim[$key];
+
                         $data[$key]['id_arsip'] = $listData[$key]->id_tbl_uu;
                         $data[$key]['judul_arsip'] = $listData[$key]->uu;
                         $data[$key]['jenis_arsip'] = $listData[$key]->tentang;
@@ -143,6 +149,13 @@ class DraftController extends Controller
                         $data[$key]['kataSama'] = $newKataSama[$key];
                         $data[$key]['cosSim'] = $cosSim[$key];
                     } else {
+                        // $data[$key]['id_arsip'] = $listData[$key]->id_arsip;
+                        // $data[$key]['judul_arsip'] = $listData[$key]->judul_arsip;
+                        // $data[$key]['jenis_arsip'] = $listData[$key]->jenis_arsip;
+                        // $data[$key]['kategori'] = $listData[$key]->category ? $listData[$key]->category->nama_kategori : ' ';
+                        // $data[$key]['kataSama'] = '0';
+                        // $data[$key]['cosSim'] = 0;
+
                         $data[$key]['id_arsip'] = $listData[$key]->id_tbl_uu;
                         $data[$key]['judul_arsip'] = $listData[$key]->uu;
                         $data[$key]['jenis_arsip'] = $listData[$key]->tentang;
@@ -153,6 +166,13 @@ class DraftController extends Controller
                 }
             } else {
                 foreach ($listData as $key => $value) {
+                    // $data[$key]['id_arsip'] = $listData[$key]->id_arsip;
+                    // $data[$key]['judul_arsip'] = $listData[$key]->judul_arsip;
+                    // $data[$key]['jenis_arsip'] = $listData[$key]->jenis_arsip;
+                    // $data[$key]['kategori'] = $listData[$key]->category ? $listData[$key]->category->nama_kategori : ' ';
+                    // $data[$key]['kataSama'] = 0;
+                    // $data[$key]['cosSim'] = 0;
+
                     $data[$key]['id_arsip'] = $listData[$key]->id_tbl_uu;
                     $data[$key]['judul_arsip'] = $listData[$key]->uu;
                     $data[$key]['jenis_arsip'] = $listData[$key]->tentang;

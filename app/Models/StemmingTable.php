@@ -9,6 +9,8 @@ class StemmingTable extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbl_stemming';
-    protected $primaryKey = 'id_stemming';
+    // protected $table = 'tbl_stemming';
+    // protected $primaryKey = 'id_stemming';
+    protected $table = 'stemming';
+    protected $primaryKey = 'id_tbl_uu';
 }

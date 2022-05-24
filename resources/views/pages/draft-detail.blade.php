@@ -55,33 +55,35 @@
                 <div class="p-5">
                     <div id="single-2" class="mt-5 grid gap-3">
                         @foreach ($simplePasal as $item)
-                            <div class='p-5 bg-white border border-slate-300 rounded-xl ease-in-out duration-300 hover:shadow-lg'>
-                                <a data-bs-toggle='collapse' href='#collapseExample{{ $item['id'] }}' role='button' aria-expanded='false' aria-controls='collapseExample{{ $item['id'] }}'>
-                                    <div class='grid grid-cols-[1fr_auto] gap-2'>
-                                        <div class=''>
-                                            <div class='text-sm capitalize font-bold'>{{ $item['uud_id'] }}</div>
+                            @if ($item['uud_content']['count'] > 0)
+                                <div class='p-5 bg-white border border-slate-300 rounded-xl ease-in-out duration-300 hover:shadow-lg'>
+                                    <a data-bs-toggle='collapse' href='#collapseExample{{ $item['id'] }}' role='button' aria-expanded='false' aria-controls='collapseExample{{ $item['id'] }}'>
+                                        <div class='grid grid-cols-[1fr_auto] gap-2'>
+                                            <div class=''>
+                                                <div class='text-sm capitalize font-bold'>{{ $item['uud_id'] }}</div>
+                                            </div>
+                                            <div class='grid place-items-center'><i class='bx bxs-chevron-down-circle text-sky-600 text-lg'></i></div>
                                         </div>
-                                        <div class='grid place-items-center'><i class='bx bxs-chevron-down-circle text-sky-600 text-lg'></i></div>
-                                    </div>
-                                </a>
-                                <div class='collapse' id='collapseExample{{ $item['id'] }}'>
-                                    <div class='pt-4'>
-                                        {!! $item['uud_content']['content'] !!}
-                                    </div>
-                                </div>
-                                <div class='pt-3 mt-2 flex justify-between items-center border-t border-t-slate-100'>
-                                    <div class='{{ $item['uud_content']['count'] > 0 ? 'font-bold text-cyan-600' : '' }}'>
-                                        Disebut {{ $item['uud_content']['count'] }} kali
-                                    </div>
-                                    <div class='flex items-center gap-3'>
-                                        <div id='ck-button' class='ck-button rounded-full border px-3 hover:bg-slate-300 hover:text-slate-800'>
-                                            <label>
-                                                <input class='checkboxes ' type='checkbox' value='{{ $item['id'] }}}' onchange='toggleChecked(this)'><span>Check</span>
-                                            </label>
+                                    </a>
+                                    <div class='collapse' id='collapseExample{{ $item['id'] }}'>
+                                        <div class='pt-4'>
+                                            {!! $item['uud_content']['content'] !!}
                                         </div>
                                     </div>
+                                    <div class='pt-3 mt-2 flex justify-between items-center border-t border-t-slate-100'>
+                                        <div class='{{ $item['uud_content']['count'] > 0 ? 'font-bold text-cyan-600' : '' }}'>
+                                            Disebut {{ $item['uud_content']['count'] }} kali
+                                        </div>
+                                        <div class='flex items-center gap-3'>
+                                            <div id='ck-button' class='ck-button rounded-full border px-3 hover:bg-slate-300 hover:text-slate-800'>
+                                                <label>
+                                                    <input class='checkboxes ' type='checkbox' value='{{ $item['id'] }}}' onchange='toggleChecked(this)'><span>Check</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         @endforeach
                     </div>
                     <div id="single-1">
@@ -157,13 +159,13 @@
         function toggleSingleView(el) {
             if ($(el).prop("checked")) {
                 $(el).attr("checked", false);
-                $('#single-1').hide()
-                $('#single-2').show()
+                $('#single-2').hide()
+                $('#single-1').show()
                 $(el).parents().eq(1).toggleClass("bg-cyan-600");
             } else {
                 $(el).attr("checked", true);
-                $('#single-1').show()
-                $('#single-2').hide()
+                $('#single-2').show()
+                $('#single-1').hide()
                 $(el).parents().eq(1).toggleClass("bg-cyan-600");
             }
         }

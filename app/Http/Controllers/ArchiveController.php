@@ -367,14 +367,14 @@ class ArchiveController extends Controller
                 if ((substr($ayat, 0, 1) == '-' && substr($ayat, -1) == '-') || (substr($ayat, 0, 3) == 'BAB') || ($foundBAB)) {
                     $foundBAB = true;
                 } else {
-                    // CHECK THE FIRST WORD OF EACH LINE TO FIND A PASAL FORMAT, EX: (1), (2), (3)
+                    // CHECK THE FIRST WORD OF EACH LINE TO FIND A AYAT FORMAT, EX: (1), (2), (3)
                     $firstWord = explode(' ', $ayat)[0];
                     $firstWordLength = strlen($firstWord);
                     $firstChar = substr($firstWord, 0, 1);
                     $midleChar = substr($firstWord, 1, $firstWordLength - 2);
                     $lastChar = substr($firstWord, -1);
                     $arrayLength = count($pasalAyat[$i]['content']);
-                    // IF THE FIRST WORD IS IN PASAL FORMAT, THEN PUSH INTO NEW AYAT
+                    // IF THE FIRST WORD IS IN AYAT FORMAT, THEN PUSH AS NEW AYAT
                     if ($firstChar == '(' && $lastChar == ')') {
                         if (is_numeric($midleChar)) {
                             if (empty($pasalAyat[$i]['content'])) {
