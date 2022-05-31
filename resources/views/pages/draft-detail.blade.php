@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div class="p-5">
-                    <div id="single-2" class="mt-5 grid gap-3">
+                    <div id="single-2" class="mt-5 grid gap-3 bg-white">
                         @foreach ($simplePasal as $item)
                             @if ($item['uud_content']['count'] > 0)
                                 <div class='p-5 bg-white border border-slate-300 rounded-xl ease-in-out duration-300 hover:shadow-lg'>
@@ -86,7 +86,7 @@
                             @endif
                         @endforeach
                     </div>
-                    <div id="single-1">
+                    <div id="single-1" class="hidden">
                         @if ($penuh)
                             <div id="penuh" class=" text-center">
                                 {{ $penuh }}

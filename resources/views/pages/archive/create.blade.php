@@ -19,6 +19,11 @@
                             <option value="{{ $category->kategori_id }}">{{ $category->nama_kategori }}</option>
                         @endforeach
                     </select>
+                    <select name="status" id="status">
+                        <option value="1">Belum verifikasi</option>
+                        <option value="2">Tidak berlaku</option>
+                        <option value="3">Berlaku</option>
+                    </select>
                     <input type="hidden" name="fromFileUpload" value="{{ isset($fromFileUpload) ? 'true' : 'false' }}">
                     @isset($fromFileUpload)
                         <a href="{{ asset('assets/hitung/temp-archive.pdf') }}" target="blank" class="text-xl text-sky-600">

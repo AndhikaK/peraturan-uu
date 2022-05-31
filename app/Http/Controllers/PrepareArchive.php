@@ -140,23 +140,6 @@ trait PrepareArchive
         }
     }
 
-    // public function simpanPasal($insert)
-    // {
-    //     $id_uu_pasal = $insert->id;
-    //     $prep = array(
-    //         'id_uu_pasal' => $id_uu_pasal,
-    //         'uud_content' => $insert->uud_content,
-    //     );
-    //     $url = 'http://localhost:5000/undang/tambahPasal';
-
-    //     $response = Http::withBody(json_encode($prep), "application/json")->post($url);
-    //     $result = $response->json();
-
-    //     $insertPre = PreprocessingPasal::create([
-    //         'id_uu_pasal' => $id_uu_pasal,
-    //         'uud_detail' => $result['values'],
-    //     ]);
-    // }
     public function simpanPasalBulk($pasalToInsert)
     {
 
@@ -167,6 +150,88 @@ trait PrepareArchive
         ]), "application/json")
             ->post($url);
         $result = $response->json();
+    }
+
+    public function simpanStemming($archive)
+    {
+        // dd($archive);
+        // $insert_id = $this->db->insert_id();
+
+        // $dataset = $this->m_kelola->getArsipByID($insert_id);
+        $dataset = Archive::find($archive->id_tbl_uu);
+        // echo"<pre>";print_r($dataset);die;
+        // if ($dataset == null) {
+        //     echo "Data masih kosong, silahkan tambahkan data training terlebih dahulu";
+        //     die();
+        // }
+        // proses case folding
+        // dd($data);
+        $text = strtolower($dataset->text);
+        $text = str_replace(
+            array(
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                '(', ')', ',', '.', '=', ';', '!', '?', '"', '$',
+                '/', '\\', '%', '&', '#', '@', '^', '*', ':', '+', ';'
+            ),
+            '',
+            $text
+        );
+        $text = str_replace('-', ' ', $text);
+
+        $caseFolding[] = array(
+            "text" => $text,
+        );
+        // echo "<pre>";print_r($caseFolding);die;
+        //proses tokenizing
+        foreach ($caseFolding as $fold) {
+            $array = explode(" ", $fold['text']);
+            foreach ($array as $key => $value) {
+                if ($value == "") {
+                    unset($array[$key]);
+                }
+            }
+
+
+            $inputText = str_replace(
+                array('\r', '\n', '\f', 'u201d', 'u201c', 'u2026'),
+                '',
+                json_encode(array_values($array))
+            );
+            $inputText = str_replace(array(',""', '\\'), '', $inputText);
+
+            $tokenizing[] = $inputText;
+        }
+
+        $stopword = $this->array_stopword();
+
+        $filtering = array();
+        foreach ($tokenizing as $token) {
+            $newArray = array();
+            $oldArray[] = json_decode($token);
+        }
+
+        foreach ($oldArray as $old_key => $word) {
+            foreach ($word as $key_w => $value_w) {
+                if (!in_array($value_w, $stopword)) {
+                    $filtering[$old_key][] = $value_w;
+                }
+            }
+        }
+        $stemmerFactory = new StemmerFactory;
+        $stemmer  = $stemmerFactory->createStemmer();
+
+        foreach ($tokenizing as $key => $filter) {
+            $kata = json_decode($filter);
+            $sentence = implode(" ", $kata);
+            $stemming   = $stemmer->stem($sentence);
+            $newArray = explode(" ", $stemming);
+            $insertStemming = array(
+                "array" => json_encode(array_values($newArray)),
+                "id_tbl_uu" => $archive->id_tbl_uu,
+            );
+            // $this->M_preprocessing->insertStemming($insertStemming);
+            $createStemming = Stemming::create($insertStemming);
+        }
     }
 
     function array_stopword()

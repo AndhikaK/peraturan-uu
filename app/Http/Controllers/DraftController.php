@@ -58,6 +58,18 @@ class DraftController extends Controller
     public function hitungCousine(Request $request)
     {
         $theme = strtolower($request->theme);
+        // DON'T PROCESS ANYTHING IF NO THEME YET
+        if ($theme == '' || $theme == null) {
+            $theme = $request->theme;
+            return DataTables::of([])
+                ->editColumn('cosSim', 'components.data-table.draft-cosSim')
+                ->addColumn('detail', function ($row) use ($theme) {
+                    return view('components.data-table.draft-detail', compact(['row', 'theme']));
+                })
+                ->rawColumns(['detail'])
+                ->make(true);
+        }
+        // PROCED THE CODE
         $dataTF = StemmingTable::get();
         // PROCESS IF dataTF NOT NULL
         if ($dataTF) {

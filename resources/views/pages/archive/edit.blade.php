@@ -3,7 +3,6 @@
 @section('content')
     <div class="p-5 lg:p-14 lg:py-7">
 
-
         <div id='container'>
             <form action="{{ route('archive.update', $archive->id_tbl_uu) }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -15,6 +14,11 @@
                         @foreach ($categories as $category)
                             <option value="{{ $category->kategori_id }}" {{ $archive->id_tbl_uu == $category->kategori_id ? 'selected' : '' }}>{{ $category->nama_kategori }}</option>
                         @endforeach
+                    </select>
+                    <select name="status" class="w-auto rounded" required>
+                        <option value="1" {{ $archive->status == 1 ? 'selected' : '' }}>Belum verifikasi</option>
+                        <option value="2" {{ $archive->status == 2 ? 'selected' : '' }}>Tidak berlaku</option>
+                        <option value="3" {{ $archive->status == 3 ? 'selected' : '' }}>Berlaku</option>
                     </select>
                     <div>
                         <a href="{{ asset('assets/pdf/') . '/' . $archive->file_arsip }}" target="blank" class="text-lg text-sky-600">

@@ -155,7 +155,8 @@ class ArchiveController extends Controller
         $request->validate([
             'uu' => 'required',
             'tentang' => 'required',
-            'category' => 'required'
+            'category' => 'required',
+            'status' => 'required',
         ]);
 
         // try {
@@ -180,10 +181,11 @@ class ArchiveController extends Controller
             'file_arsip' => $fileName,
             'id_kategori' => $request->category,
             'text' => 'empty',
-            'status' => 1,
+            'status' => $request->status,
         ]);
 
         $this->simpan($archive);
+        $this->simpanStemming($archive);
         // PROCESS PASAL AYAT
         $pasalUpload = [];
         foreach ($request->all() as $key => $item) {
@@ -498,7 +500,8 @@ class ArchiveController extends Controller
         $request->validate([
             'uu' => 'required',
             'tentang' => 'required',
-            'category' => 'required'
+            'category' => 'required',
+            'status' => 'required',
         ]);
 
         try {
@@ -507,7 +510,7 @@ class ArchiveController extends Controller
                 'uu' => $request->uu,
                 'tentang' => $request->tentang,
                 'id_kategori' => $request->category,
-                'status' => 1,
+                'status' => $request->status,
             ];
             $fileName = '';
             // SAVE ARCHVE FILE IN FOLDER
